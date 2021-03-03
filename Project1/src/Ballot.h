@@ -6,18 +6,22 @@
 #include <atomic>
 #include <cstdint>
 
+#include "Loggable.h"
+
 /**
  * @brief
  */
-class Ballot {
+class Ballot : public Loggable {
  private:
-  uint64_t id;
+  uint64_t id = 0xFFFFFFFF;
 
   static std::atomic<uint64_t> next_id;
 
   static uint64_t generate_id();
 
  public:
+  Ballot();
+  virtual ~Ballot();
   uint64_t get_id() const;
   virtual uint8_t get_choice() const = 0;
 };

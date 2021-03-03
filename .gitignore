@@ -1,3 +1,9 @@
 
 # C++ Object Files
 *.o
+
+# Compiler Default Outputs
+a.out
+
+# Valgrind Dumps
+vgcore.*
