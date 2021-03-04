@@ -1,4 +1,4 @@
-
+// Copyright 2021, CSCI 5801 Spring 2021 Team 20
 #include "test_IRBallot.h"
 
 TEST_F(fixture_IRBallot, IRBallotCSVParse) {
@@ -14,6 +14,6 @@ TEST_F(fixture_IRBallot, IRBallotCSVParse) {
 
   // Test empty string
   ballot = new IRBallot("");
-  ASSERT_EQ(ballot->get_choices().size(), 4);
+  ASSERT_EQ(ballot->get_choices().size(), 0);
   delete ballot;
 }
