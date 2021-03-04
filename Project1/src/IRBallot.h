@@ -21,6 +21,7 @@ class IRBallot : public Ballot {
   explicit IRBallot(const std::string& line);
   ~IRBallot();
   uint8_t get_choice() const override;
+  const std::vector<uint8_t>& get_choices() const;
   void increment_choice();
   std::string log() const override;
 };

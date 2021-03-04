@@ -1,14 +1,19 @@
 
-#include <iostream>
+#include "test_IRBallot.h"
 
-#include "../src/IRBallot.h"
+TEST_F(fixture_IRBallot, IRBallotCSVParse) {
+  // Test basic functionality
+  ballot = new IRBallot("1,2,3,4");
+  ASSERT_EQ(ballot->get_choices().size(), 4);
+  delete ballot;
 
-int main(int argc, char const *argv[]) {
-  std::string line = argv[1];
+  // Test no choices
+  ballot = new IRBallot(",,,,");
+  ASSERT_EQ(ballot->get_choices().size(), 0);
+  delete ballot;
 
-  IRBallot test(line);
-
-  std::cout << test.log() << std::endl;
-
-  return 0;
+  // Test empty string
+  ballot = new IRBallot("");
+  ASSERT_EQ(ballot->get_choices().size(), 4);
+  delete ballot;
 }

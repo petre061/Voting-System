@@ -41,6 +41,10 @@ uint8_t IRBallot::get_choice() const {
   // Return the choice
   return choices[choice_index];
 }
+const std::vector<uint8_t>& IRBallot::get_choices() const {
+  // Return reference to choices
+  return choices;
+}
 void IRBallot::increment_choice() {
   // Go to the next choice if we still have choices left
   if (choice_index < choices.size()) {
