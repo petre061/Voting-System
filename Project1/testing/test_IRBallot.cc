@@ -17,3 +17,12 @@ TEST_F(fixture_IRBallot, IRBallotCSVParse) {
   ASSERT_EQ(ballot->get_choices().size(), 0);
   delete ballot;
 }
+
+TEST_F(fixture_IRBallot, IRBallotIncrement) {
+  // Test basic functionality
+  ballot = new IRBallot("1,2,3,4");
+  ASSERT_EQ(ballot->get_choice(), 0);
+  ballot->increment_choice();
+  ASSERT_EQ(ballot->get_choice(), 1);
+  delete ballot;
+}
