@@ -4,7 +4,14 @@
 #include "IRBallot.h"
 
 int main(int argc, char const *argv[]) {
-  IRBallot b("1,2,3,4");
+  std::string line = "1,2,3,4";
+
+  if (argc > 1) {
+    line = argv[1];
+  }
+
+  IRBallot b(line);
   std::cout << "Hello World" << std::endl;
+  std::cout << b.log() << std::endl;
   return 0;
 }

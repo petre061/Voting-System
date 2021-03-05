@@ -21,3 +21,18 @@ It is highly recommended that one takes a look at the `Makefile` commands under 
   - `cmake .. -DCMAKE_BUILD_TYPE=Debug`
 * Build the executable
   - `make -j$(nproc)`
+* Run the executable
+  - `./voting_system`
+
+#### Testing ####
+There are two ways to run the tests for this program. The first one will show the combined results of all the tests:
+
+* `cd build`
+* `make -j$(nproc)`
+* `make test`
+
+
+The second way of testing will print the results of individual tests to the screen. This is:
+* `cd build`
+* `make -j$(nproc)`
+* `./testing/voting_system_test`

@@ -2,22 +2,46 @@
 
 #include "IRBallot.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <exception>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <utility>
+
+bool IRBallot::choice_sorter(const std::pair<uint8_t, uint8_t>& a,
+                             const std::pair<uint8_t, uint8_t>& b) {
+  return a.second < b.second;
+}
 
 IRBallot::IRBallot(const std::string& line) {
-  // Make a vector for the columns in the csv line
-  std::vector<std::string> columns;
+  // Make a map for the columns in the csv line
+  // std::map<candidate_index, candidate_rating> columns;
+  std::vector<std::pair<uint8_t, uint8_t>> columns;
+  std::string column = "";
+  // Define a candidate index
+  uint8_t candidate_index = 0;
   // Define a begin and end index for each column
   size_t begin = 0;
   size_t end = line.find(",");
 
   // Get the first column from the line
-  columns.push_back(line.substr(begin, end - begin));
+  column = line.substr(begin, end - begin);
+  // Check column is formatted properly
+  if (!column.empty() &&
+      column.find_first_not_of("0123456789") == std::string::npos) {
+    // Put the column choice into
+    columns.push_back(std::make_pair(candidate_index, std::stoul(column)));
+  } else if (column.empty()) {
+    // Don't add choice to list
+  } else {
+    // TODO(Alex): switch to throw
+    exit(1);
+  }
+  ++candidate_index;
 
   // Get the remaining columns
   while (end != std::string::npos) {
@@ -25,10 +49,34 @@ IRBallot::IRBallot(const std::string& line) {
     begin = end + 1;
     end = line.find(",", begin);
 
-    // Get the column from the line
-    columns.push_back(line.substr(begin, end - begin));
+    // Get the first column from the line
+    column = line.substr(begin, end - begin);
+    // Check column is formatted properly
+    if (!column.empty() &&
+        column.find_first_not_of("0123456789") == std::string::npos) {
+      // Put the column choice into
+      columns.push_back(std::make_pair(candidate_index, std::stoul(column)));
+    } else if (column.empty()) {
+      // Don't add choice to list
+    } else {
+      // TODO(Alex): switch to throw
+      exit(1);
+    }
+    ++candidate_index;
   }
-  // TODO(Alex): Translate columns into the candidate index
+  // Sort the columns by the candidate preference
+  std::sort(columns.begin(), columns.end(), choice_sorter);
+
+  // Print the sorted columns
+  // for (auto& p : columns) {
+  //   std::cout << std::to_string(p.first) << ":" << std::to_string(p.second)
+  //             << std::endl;
+  // }
+
+  // Put the sorted list into the choices
+  for (auto& p : columns) {
+    choices.push_back(p.first);
+  }
 }
 IRBallot::~IRBallot() {
   // Nothing
@@ -36,7 +84,7 @@ IRBallot::~IRBallot() {
 uint8_t IRBallot::get_choice() const {
   // If we have run out of choices return max choice
   if (choice_index >= choices.size()) {
-    return 0xFF;
+    return NO_CHOICE;
   }
   // Return the choice
   return choices[choice_index];
@@ -61,12 +109,12 @@ std::string IRBallot::log() const {
   size_t i = 0;
   // Put the first choice onto the stream
   if (choices.size() > 0) {
-    output << choices[i];
+    output << std::to_string(choices[i]);
     ++i;
   }
   // Put all but the final element into the stream
   for (; i < choices.size(); ++i) {
-    output << ", " << choices[i];
+    output << ", " << std::to_string(choices[i]);
   }
 
   // Put the choice index into the stream
