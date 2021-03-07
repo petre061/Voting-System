@@ -1,8 +1,29 @@
 // Copyright CSCI 5801 Spring 2021 Team 20
 #include "OPLBallot.h"
+#include <iostream>
+#include <vector>
+#include <sstream>
+// Step 1: Create stream from given string
+// Step 2: While the stream is not completed
+// Step 2.1: Take item before comma
+// Step 2.2: Add item into a vector
+// Step 3: Return the vector
 
 OPLBallot::OPLBallot(const std::string& line) {
   // TODO(Alex, Peter): Implement line parsing
+  string line2parse = line;
+    vector<string> parsedline;
+    stringstream s_stream(line2parse);
+    uint8_t i = 0;
+    while(s_stream.good()) {
+        string substr;
+        getline(s_stream, substr, ',');
+        if(substr == "1") {
+            choice = i;
+        }
+        i++;
+        parsedline.push_back(substr);
+    }
 }
 uint8_t OPLBallot::get_choice() const {
   // Return the current choice
