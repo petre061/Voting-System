@@ -34,5 +34,5 @@ TEST_F(fixture_IRBallot, IRBallotIncrement) {
   ASSERT_EQ(ballot->get_choice(), 3);
   // Choice should now be max (out of range of candidate)
   ballot->increment_choice();
-  ASSERT_EQ(ballot->get_choice(), IRBallot::NO_CHOICE);
+  ASSERT_EQ(ballot->get_choice(), Ballot::NO_CHOICE);
 }

@@ -5,15 +5,12 @@
 
 #include <atomic>
 #include <cstdint>
-
+// The next ballot's id. Starts at zero for the first ballot
 std::atomic<uint64_t> Ballot::next_id(0);
 
 Ballot::Ballot() {
   // Generate a unique ID for this ballot
   id = generate_id();
-}
-Ballot::~Ballot() {
-  // Nothing
 }
 uint64_t Ballot::generate_id() {
   // Return the next id and increment it for the next time

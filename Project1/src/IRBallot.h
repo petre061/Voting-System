@@ -42,10 +42,6 @@ class IRBallot : public Ballot {
    */
   uint8_t get_choice() const override;
   /**
-   * If a ballot is out of remaining candidates, it will return @ref NO_CHOICE
-   */
-  static constexpr uint8_t NO_CHOICE = 0xFF;
-  /**
    * @brief Increment the candidate choice
    *
    * This is used when a ballot is redistributed to a different candidate. This
@@ -62,7 +58,6 @@ class IRBallot : public Ballot {
    * @return     A string appropriate for logging
    */
   std::string log() const override;
-
   /**
    * @brief      Gets a reference to the vector of choices
    *

@@ -103,8 +103,11 @@ std::string IRBallot::log() const {
   // Make a string stream for output
   std::stringstream output;
 
+  // Print the ballot type and id
+  output << "IRBallot: id=" << std::to_string(get_id());
+
   // Print the choices
-  output << "IRBallot: choices=[";
+  output << " choices=[";
 
   size_t i = 0;
   // Put the first choice onto the stream
