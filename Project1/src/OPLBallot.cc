@@ -11,6 +11,9 @@
 
 OPLBallot::OPLBallot(std::string& line) {
   // TODO(Alex, Peter): Implement line parsing
+  if(line.length() == 0) {
+    throw std::invalid_argument("Invalid Ballot - Empty");
+  }
   string line2parse = line;
     vector<string> parsedline;
     stringstream s_stream(line2parse);
@@ -25,6 +28,8 @@ OPLBallot::OPLBallot(std::string& line) {
         i++;
         parsedline.push_back(substr);
     }
+    throw std::invalid_argument("Invalid Ballot - no choice selected");
+
 }
 uint8_t OPLBallot::get_choice() const {
   // Return the current choice

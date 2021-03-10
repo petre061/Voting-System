@@ -10,11 +10,21 @@ OPLParty::OPLParty(const std::string& name) {
 }
 
 uint64_t OPLParty::get_tally() {
-  return candidates.size();
+  uint64_t tally =0;
+  for (int i = 0; i < candidates.size()) {
+    tally += candidates.at(i)->get_tally();
+  }
+  return tally;
 }
+
+void OPLParty::add_candidate(OPLCandidate new_candidate) {
+  candidates.push_back(new_candidate);
+  return;
+}
+
 std::string OPLParty::log() const {
   stringstream output;
-  output << "OPL Party " << pname << " : ["
+  output << "OPL Party " << pname << ": ["
   for(int i = 0; i < candidates.size(); i++) {
     // For all OPLCandidate objects attributed to specific OPLParty:
         for(int j = 0; j < candidates.at(i)->get_tally(); j++) {
