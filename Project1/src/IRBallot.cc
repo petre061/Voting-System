@@ -38,8 +38,8 @@ IRBallot::IRBallot(const std::string& line) {
   } else if (column.empty()) {
     // Don't add choice to list
   } else {
-    // TODO(Alex): switch to throw
-    exit(1);
+    // Throw a invalid argument exception
+    throw std::invalid_argument("Non-digit in csv column");
   }
   ++candidate_index;
 
@@ -59,11 +59,14 @@ IRBallot::IRBallot(const std::string& line) {
     } else if (column.empty()) {
       // Don't add choice to list
     } else {
-      // TODO(Alex): switch to throw
-      exit(1);
+      // Throw a invalid argument exception
+      throw std::invalid_argument("Non-digit in csv column");
     }
     ++candidate_index;
   }
+
+  // TODO(Optional): Validate ballot form
+
   // Sort the columns by the candidate preference
   std::sort(columns.begin(), columns.end(), choice_sorter);
 
@@ -77,9 +80,6 @@ IRBallot::IRBallot(const std::string& line) {
   for (auto& p : columns) {
     choices.push_back(p.first);
   }
-}
-IRBallot::~IRBallot() {
-  // Nothing
 }
 uint8_t IRBallot::get_choice() const {
   // If we have run out of choices return max choice
@@ -103,8 +103,11 @@ std::string IRBallot::log() const {
   // Make a string stream for output
   std::stringstream output;
 
+  // Print the ballot type and id
+  output << "IRBallot: id=" << std::to_string(get_id());
+
   // Print the choices
-  output << "IRBallot: choices=[";
+  output << " choices=[";
 
   size_t i = 0;
   // Put the first choice onto the stream

@@ -1,8 +1,9 @@
 // Copyright CSCI 5801 Spring 2021 Team 20
 #include "OPLBallot.h"
+
 #include <iostream>
-#include <vector>
 #include <sstream>
+#include <vector>
 // Step 1: Create stream from given string
 // Step 2: While the stream is not completed
 // Step 2.1: Take item before comma
@@ -11,6 +12,7 @@
 
 OPLBallot::OPLBallot(std::string& line) {
   // TODO(Alex, Peter): Implement line parsing
+<<<<<<< HEAD
   //id = generate_id();
   string line2parse = line;
     vector<string> parsedline;
@@ -25,7 +27,21 @@ OPLBallot::OPLBallot(std::string& line) {
         }
         i++;
         parsedline.push_back(substr);
+=======
+  std::string line2parse = line;
+  std::vector<std::string> parsedline;
+  std::stringstream s_stream(line2parse);
+  uint8_t i = 0;
+  while (s_stream.good()) {
+    std::string substr;
+    getline(s_stream, substr, ',');
+    if (substr == "1") {
+      choice = i;
+>>>>>>> e71830705aaeaf562d0db4d202a6a32662c460e6
     }
+    i++;
+    parsedline.push_back(substr);
+  }
 }
 
 OPLBallot::~OPLBallot() {
