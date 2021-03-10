@@ -4,9 +4,9 @@
 #define OPLPARTY_H_
 
 #include <cstdint>
+#include <queue>
 #include <sstream>
 #include <string>
-#include <queue>
 
 #include "Loggable.h"
 #include "OPLCandidate.h"
@@ -16,12 +16,16 @@
  */
 class OPLParty : public Loggable {
  private:
-    std::string name;
-    std::queue<OPLCandidate> candidates;
+  std::string name;
+  std::queue<OPLCandidate*> candidates;
+
  public:
-    explicit OPLParty(const std::string& name); // explicit keyword prevents compiler from using constructor for implicit conversion which can hide bugs
-    uint64_t get_tally();
-    std::string log() const override;
+  explicit OPLParty(
+      const std::string&
+          name);  // explicit keyword prevents compiler from using constructor
+                  // for implicit conversion which can hide bugs
+  uint64_t get_tally();
+  std::string log() const override;
 };
 
 #endif  // OPLPARTY_H_

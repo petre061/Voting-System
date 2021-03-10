@@ -3,8 +3,23 @@
 
 MediaReport::MediaReport(const std::string& report_name)
     : filename(report_name) {
-  // TODO(someone): open file
+  // If unable to open file specified, throw exception
+  if (!file.is_open()) {
+    throw std::invalid_argument("Unable to create MediaReport \'" + filename +
+                                "\'");
+  }
+
+  // Write audit log header
+  file << "Voting System 1.0" << std::endl;
+  file << "Report Generated: " << get_time_date() << std::endl;
 }
 void MediaReport::write(const std::string& text) {
-  // TODO(someone): write text to file
+  // Write text to file
+  file << text << std::endl;
+}
+std::string MediaReport::get_time_date() {
+  // Return the current time as a string
+  auto now =
+      std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+  return std::ctime(&now);
 }
