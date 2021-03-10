@@ -9,8 +9,9 @@
 // Step 2.2: Add item into a vector
 // Step 3: Return the vector
 
-OPLBallot::OPLBallot(const std::string& line) {
+OPLBallot::OPLBallot(std::string& line) {
   // TODO(Alex, Peter): Implement line parsing
+  //id = generate_id();
   string line2parse = line;
     vector<string> parsedline;
     stringstream s_stream(line2parse);
@@ -20,10 +21,15 @@ OPLBallot::OPLBallot(const std::string& line) {
         getline(s_stream, substr, ',');
         if(substr == "1") {
             choice = i;
+            exit();
         }
         i++;
         parsedline.push_back(substr);
     }
+}
+
+OPLBallot::~OPLBallot() {
+  // nothing
 }
 uint8_t OPLBallot::get_choice() const {
   // Return the current choice
@@ -40,3 +46,7 @@ std::string OPLBallot::log() const {
   // Return the stream converted to a string
   return output.str();
 }
+
+// uint64_t OPLBallot::get_id() const {
+//   return id;
+// }

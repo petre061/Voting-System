@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <sstream>
 #include <string>
-
 #include "Ballot.h"
 
 /**
@@ -15,9 +14,10 @@
 class OPLBallot : public Ballot {
  private:
   uint8_t choice = 255;
-
+  //uint64_t id = 0xFFFFFFFF;
  public:
   explicit OPLBallot(const std::string& line);
+  virtual ~OPLBallot();
   uint8_t get_choice() const override;
   std::string log() const override;
 };
