@@ -7,7 +7,17 @@
 #include <string>
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
-  // TODO: should initialize total_ballots here
+  std::string line;
+  for(int i = 0; i < 4; i++){
+    getline(ballot_file, line);
+    if(i < 2) {
+      continue;
+    } else if (i == 2) {
+      // TODO: parse candidates
+    } else if (i == 3){
+      total_ballots = std::stoi(line);
+    }
+  }
 }
 
 void IRElection::parse_ballots() {
@@ -18,14 +28,8 @@ void IRElection::parse_ballots() {
   std::string line;
   while (getline(ballot_file, line)) {
     ++lineNum;
-    if (lineNum == 1) {
-      type = line;
-    } else if (lineNum == 2) {
-      // candidates.resize(std::stoi(line));
-    } else if (lineNum == 3) {
-      // TODO: parse candidate line and populate candidate and party vectors
-    } else if (lineNum == 4) {
-      total_ballots = std::stoi(line);
+    if (lineNum < 5) {
+      continue;
     } else {
       // TODO: store ballots in candidates (maybe assign first choices here
       // too?)
