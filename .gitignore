@@ -10,3 +10,6 @@ vgcore.*
 
 # `build` directory
 build
+
+# Visual Studio Settings
+.vscode
