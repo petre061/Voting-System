@@ -15,7 +15,7 @@
  */
 class OPLElection : public Election {
     private:
-        std::vector<OPLCandidate> candidates; 
+        std::vector<OPLCandidate*> candidates; 
         std::vector<OPLParty> parties;
         uint16_t num_seats = 0;
         void parse_ballots();
