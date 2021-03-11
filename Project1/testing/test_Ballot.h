@@ -1,4 +1,4 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+// Copyright 2021, CSCI 5801 Spring 2021 Team 20
 
 #ifndef PROJECT1_TESTING_TEST_BALLOT_H_
 #define PROJECT1_TESTING_TEST_BALLOT_H_
