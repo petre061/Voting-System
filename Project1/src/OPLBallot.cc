@@ -3,27 +3,28 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <string>
 // Step 1: Create stream from given string
 // Step 2: While the stream is not completed
 // Step 2.1: Take item before comma
 // Step 2.2: Add item into a vector
 // Step 3: Return the vector
 
-OPLBallot::OPLBallot(std::string& line) {
+OPLBallot::OPLBallot(const std::string& line) {
   // TODO(Alex, Peter): Implement line parsing
   if(line.length() == 0) {
     throw std::invalid_argument("Invalid Ballot - Empty");
   }
-  string line2parse = line;
-    vector<string> parsedline;
-    stringstream s_stream(line2parse);
+  std::string line2parse = line;
+    std::vector<std::string> parsedline;
+    std::istringstream s_stream(line2parse);
     uint8_t i = 0;
     while(s_stream.good()) {
-        string substr;
+        std::string substr;
         getline(s_stream, substr, ',');
         if(substr == "1") {
             choice = i;
-            exit();
+            exit(0);
         }
         i++;
         parsedline.push_back(substr);

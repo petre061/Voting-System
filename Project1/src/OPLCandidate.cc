@@ -1,25 +1,29 @@
 #include "OPLCandidate.h"
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <queue>
 
 OPLCandidate::OPLCandidate(const std::string& candidate) {
     name = candidate;
 }
 
 void OPLCandidate::add_ballot(OPLBallot new_ballot) {
-    ballots.push_back(new_ballot);
+    ballots.push(new_ballot);
     return;
 }
 
-uint8_t OPLCandidate::get_tally() {
+uint64_t OPLCandidate::get_tally() {
     return ballots.size();
 }
 
-std::string OPLCandidate::log() { // log of all ballots in candidate's category by ids
+std::string OPLCandidate::log() const { // log of all ballots in candidate's category by ids
     std::stringstream output;
+    std::queue<OPLBallot> temp = ballots;
     output << "Candidate << " << name << " : ballots =[";
-    for(int i = 0; i < ballots.size(); i++) {
-        output << ballots.at(i)->log() << ",";
+    while (!temp.empty()) {
+        output << temp.front().log() << ",";
+        temp.pop();
     }
     output << "]";
     return output.str();

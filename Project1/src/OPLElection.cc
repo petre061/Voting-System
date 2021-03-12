@@ -9,12 +9,15 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <map>
 
 OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
-  std::string line, out, party;
-  for(int i = 0; i < 5; i++){
+  std::string line, name, party;
+  std::map<std::string, int> p_idx; // used to map the parties to their indexes in the vector
+  int p_idx_count = 0; // map index counter
+  for (int i = 0; i < 5; i++){
     getline(ballot_file, line);
-    if(i < 2) {
+    if (i < 2) {
       continue;
     } else if (i == 2) {
       // TODO: parse candidates/parties
@@ -25,11 +28,42 @@ OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
 
       // parse information and create/assign objects
       std::istringstream ss(line);
-      while(getline(ss, out, ',')){
-        // candidates.push_back(new OPLCandidate(out));               not sure the proper way to push a pointer here
+      while (getline(ss, name, ',')){
+        OPLCandidate* temp = new OPLCandidate(name);
+        candidates.push_back(temp);
         getline(ss, party, ',');
-        // parties.push_back(new OPLParty(party));
-        // parties.back().candidates.push(new OPLCandidate(out));      party's candidates inaccessible?
+
+        // adding first party and candidate
+        if (parties.size() == 0) {
+          parties.push_back(OPLParty(party));
+          parties.back().add_candidate(temp);
+          p_idx[party] = p_idx_count++;
+
+          // if the party exists add candidate there
+        } else if (p_idx.find(party) != p_idx.end()){
+          parties.at(p_idx.find(party)->second).add_candidate(temp);
+
+          // if the party does not exist but they are a unique independent then add to independent 
+        } else if (p_idx.find(party) == p_idx.end() && party.compare("D") != 0 || party.compare("R") != 0 || party.compare("I") != 0) {
+
+          // if independent doesn't exist yet then add it 
+          if (p_idx.find("I") == p_idx.end()) {
+            parties.push_back(OPLParty("I"));
+            parties.back().add_candidate(temp);
+            p_idx["I"] = p_idx_count++;
+          }
+
+          // if independent already exists then add to exisiting independent party
+          else {
+            parties.at(p_idx.find("I")->second).add_candidate(temp);
+          }
+
+          // party does not exist yet so add
+        } else {
+          parties.push_back(OPLParty(party));
+          parties.back().add_candidate(temp);
+          p_idx[party] = p_idx_count++;
+        }
       }
     } else if (i == 3) {
       num_seats = std::stoi(line);
@@ -43,14 +77,25 @@ void OPLElection::parse_ballots() {
   // TODO: finish parse ballots
 
   // File is already open from constructor of Election
-  int lineNum = 0;
-  std::string line;
+  int lineNum = 0, candidate_idx = 0;
+  std::string line, index;
   while (getline(ballot_file, line)) {
     ++lineNum;
     if (lineNum < 6) {
       continue;
     } else {
-      // TODO: Add ballot to candidate based on index
+      // format ballot line and add ballot to specified candidate index
+      line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+      std::istringstream ss(line);
+      while(getline(ss, index, ',')) {
+        if(index.length() == 0) {
+          candidate_idx++;
+        } else {
+          break;
+        }
+      }
+      candidates.at(candidate_idx)->add_ballot(OPLBallot(line));
+      candidate_idx = 0;
     }
   }
   // We can close ballot file here since we are probably done with it.
@@ -60,9 +105,14 @@ void OPLElection::parse_ballots() {
 
 void OPLElection::assign_seats() {
   // TODO: assign seats to party/candidate
-
+  std::vector<int> remainders(parties.size());
+  std::map<std::string, int> party_seats;
   // determine quota
+  int quota = total_ballots / num_seats;
   // assign initial seats to parties
+  for(int i = 0; i < parties.size(); i++){
+    // TODO: assign initial seats
+  }
   // rank parties by remaining votes
   // allocate seats in order of highest remaining votes
   // assign candidates to seats based on number of votes (will probably need
