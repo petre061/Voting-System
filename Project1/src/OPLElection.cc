@@ -107,6 +107,7 @@ void OPLElection::parse_ballots() {
 
 void OPLElection::assign_seats() {
   // TODO: add logic for tie break when one seat is available and 2 candidates have same number of votes
+  // TODO: add logic for tie break when one seat is available and 2 parties have same number of remaining votes
   // TODO: add logic for when party has more seats than candidates
 
   // assign seats to party/candidate
