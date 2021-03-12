@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <sstream>
 #include <map>
+#include <iostream>
 
 OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
   std::string line, name, party;
@@ -20,7 +21,7 @@ OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
     if (i < 2) {
       continue;
     } else if (i == 2) {
-      // TODO: parse candidates/parties
+      // parse candidates/parties
       // format line
       line.erase(std::remove(line.begin(), line.end(), '['), line.end());
       line.erase(std::remove(line.begin(), line.end(), ']'), line.end());
@@ -101,26 +102,60 @@ void OPLElection::parse_ballots() {
   // We can close ballot file here since we are probably done with it.
   // otherwise it will be closed in the destructor of Election
   ballot_file.close();
+  return;
 }
 
 void OPLElection::assign_seats() {
-  // TODO: assign seats to party/candidate
+  // TODO: add logic for tie break when one seat is available and 2 candidates have same number of votes
+  // TODO: add logic for tie break when one seat is available and 2 parties have same number of remaining votes
+  // TODO: add logic for when party has more seats than candidates
+
+  // assign seats to party/candidate
   std::vector<int> remainders(parties.size());
-  std::map<std::string, int> party_seats;
+  int total_seats = num_seats;
+
   // determine quota
-  int quota = total_ballots / num_seats;
+  int quota = (int)total_ballots / num_seats;
+
   // assign initial seats to parties
   for(int i = 0; i < parties.size(); i++){
-    // TODO: assign initial seats
+    int seats = (int)parties.at(i).get_tally() / quota;
+    total_seats = total_seats - seats;
+    party_seats[parties.at(i).get_name()] = seats;
+    remainders.at(i) = parties.at(i).get_tally() % quota;
   }
-  // rank parties by remaining votes
-  // allocate seats in order of highest remaining votes
-  // assign candidates to seats based on number of votes (will probably need
-  // another function for this)
+
+  // rank parties by remaining votes and allocate seats in order of highest remaining votes
+  while(total_seats > 0) {
+    auto most_rem = std::max_element(std::begin(remainders), std::end(remainders));
+    int index = std::distance(std::begin(remainders), most_rem);
+    party_seats[parties.at(index).get_name()]++;
+    total_seats--;
+    remainders.at(index) = 0;
+  }
+
+  // assign candidates to seats based on number of votes 
+  for(int i = 0; i < parties.size(); i++) {
+    party_candidates[parties.at(i).get_name()] = parties.at(i).get_top_n_candidate_names(party_seats[parties.at(i).get_name()]);
+  }
+
+  return;
 }
 
 void OPLElection::announce_results() {
-  // TODO: display winner, vote percentages, other info to screen
+  // TODO: send information to media report
+  for(int i = 0; i < parties.size(); i++) {
+    std::vector<std::string> temp_candidates = party_candidates[parties.at(i).get_name()];
+    int percent_of_total = parties.at(i).get_tally() * 100 / total_ballots;
+    int percent_of_seats = party_seats[parties.at(i).get_name()] * 100 / num_seats;
+    std::cout << "Party " << parties.at(i).get_name() << " won " << party_seats[parties.at(i).get_name()] << " seats." << std::endl;
+    std::cout << "They won " << percent_of_total << "% of the total votes and " << percent_of_seats << "% of the seats" << std::endl;
+    std::cout << "The candidates that won those seats are: ";
+    for(int j = 0; j < temp_candidates.size(); j++) {
+      std::cout << temp_candidates.at(i) << " ";
+    }
+    std::cout << std::endl << std::endl;
+  }
 }
 
 int OPLElection::run() {

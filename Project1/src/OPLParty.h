@@ -28,6 +28,7 @@ class OPLParty : public Loggable {
   void add_candidate(OPLCandidate* new_candidate);
   std::string log() const override;
   std::string get_name();
+  std::vector<std::string> get_top_n_candidate_names(int n);
 };
 
 #endif  // OPLPARTY_H_

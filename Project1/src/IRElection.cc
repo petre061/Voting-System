@@ -5,15 +5,24 @@
 
 #include <sstream>
 #include <string>
+#include <algorithm>
+#include <fstream>
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
-  std::string line;
+  std::string line, name;
   for (int i = 0; i < 4; i++) {
     getline(ballot_file, line);
     if (i < 2) {
       continue;
     } else if (i == 2) {
-      // TODO: parse candidates
+      // parse candidates
+      line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+      line.erase(std::remove(line.begin(), line.end(), '('), line.end());
+      line.erase(std::remove(line.begin(), line.end(), ')'), line.end());
+      std::istringstream ss(line);
+      while(getline(ss, name, ',')) {
+        candidates.push_back(IRCandidate(name.substr(0, name.length() - 1), name.substr(name.length() - 1)));
+      }
     } else if (i == 3) {
       total_ballots = std::stoi(line);
     }
@@ -21,8 +30,6 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
 }
 
 void IRElection::parse_ballots() {
-  // TODO: finish parse ballots
-
   // File is already open from Election constructor
   int lineNum = 0;
   std::string line;
@@ -31,8 +38,10 @@ void IRElection::parse_ballots() {
     if (lineNum < 5) {
       continue;
     } else {
-      // TODO: store ballots in candidates (maybe assign first choices here
-      // too?)
+      // store ballots in candidates
+      IRBallot* temp = new IRBallot(line);
+      int c_idx = temp->get_choice();
+      candidates.at(c_idx).add_ballot(IRBallot(line));
     }
   }
   // Can close here otherwise it will also be called in destructor
@@ -42,6 +51,8 @@ void IRElection::parse_ballots() {
 void IRElection::redistribute(uint8_t) {
   // TODO: redistribute among candidates
 
+  // check for multiple losers
+  // break tie if necessary
   // get loser ballot
   // find next choice
   // add to new candidate
@@ -54,20 +65,19 @@ void IRElection::announce_results() {
 
 int IRElection::run() {
   // TODO: driver function for IR Elections
+  bool found_winner = false;
+  int majority = (total_ballots + 1) / 2;
 
   // parse ballots
+  parse_ballots();
+
   // while no winner loop until determined
-  // if winner
-  // if tie for winner
-  // tie break
-  // declare winner/announce results (break)
-  // else
-  // find loser
-  // if tie
-  // tie break
-  // eliminate loser
-  // redistribute votes (loop)
-  // return
+  while(!found_winner) {
+    // check for majority
+    // if majority then declare winner and break
+    // if tie for majority then tie break
+    // else redistribute and loop
+  }
 }
 
 std::string IRElection::log() const {

@@ -25,6 +25,7 @@ class OPLCandidate : public Loggable {
   void add_ballot(OPLBallot new_ballot);
   uint64_t get_tally();
   std::string log() const override;
+  std::string get_name();
 };
 
 #endif  // OPLCANDIDATE_H_
