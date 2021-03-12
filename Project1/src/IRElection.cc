@@ -8,13 +8,13 @@
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   std::string line;
-  for(int i = 0; i < 4; i++){
+  for (int i = 0; i < 4; i++) {
     getline(ballot_file, line);
-    if(i < 2) {
+    if (i < 2) {
       continue;
     } else if (i == 2) {
       // TODO: parse candidates
-    } else if (i == 3){
+    } else if (i == 3) {
       total_ballots = std::stoi(line);
     }
   }
@@ -71,5 +71,25 @@ int IRElection::run() {
 }
 
 std::string IRElection::log() const {
-  // TODO: log election actions
+  std::stringstream output;
+
+  output << "IRElection: total_ballots=" << std::to_string(total_ballots);
+
+  // Print the candidate names
+  output << " candidates=[";
+
+  auto candidate = candidates.begin();
+  if (!candidates.empty()) {
+    output << candidate->get_name();
+    ++candidate;
+  }
+  for (; candidate != candidates.end(); ++candidate) {
+    output << ", " << candidate->get_name();
+    ++candidate;
+  }
+  output << "]";
+
+  // TODO(someone): further logging?
+
+  return output.str();
 }
