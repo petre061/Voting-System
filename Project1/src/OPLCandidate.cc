@@ -29,6 +29,7 @@ std::string OPLCandidate::log() const { // log of all ballots in candidate's cat
     return output.str();
 }
 
-std::string OPLCandidate::get_name() {
-    return name;
+const std::string& OPLCandidate::get_name() const {
+  // Return a constant reference to name
+  return name;
 }

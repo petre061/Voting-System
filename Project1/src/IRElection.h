@@ -10,6 +10,8 @@
 #include "Election.h"
 #include "IRBallot.h"
 #include "IRCandidate.h"
+#include <TieBreaker.h>
+
 /**
  * @brief
  */

@@ -138,6 +138,7 @@ void OPLElection::assign_seats() {
     }
     else {
       // TODO: Tie break 
+      TieBreaker::flip();
     }
   }
 

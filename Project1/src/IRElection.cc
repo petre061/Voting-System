@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 
+
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   std::string line, name;
   for (int i = 0; i < 4; i++) {
@@ -64,7 +65,7 @@ void IRElection::redistribute(uint8_t candidate_index) {
 }
 
 void IRElection::announce_results() {
-  // TODO: add information to media report
+  // add information to media report
   std::cout << "The winner of the election is " << candidates.at(winnerIndex).get_name() << " of party " << candidates.at(winnerIndex).get_party() << " with " << candidates.at(winnerIndex).get_tally() * 100 / total_ballots << "% of the votes";
   for(int i = 0; i < candidates.size(); i++) {
     if(i == winnerIndex) {
@@ -111,6 +112,7 @@ int IRElection::run() {
       }
       else {
         //TODO : Tie breaker
+        TieBreaker::flip();
       }  
     }
     else {
@@ -122,6 +124,8 @@ int IRElection::run() {
       }
       else {
         // TODO: Tie breaker and redistribute
+        TieBreaker::flip();
+        redistribute(max_location);         // not sure if this is correct?? 
       }
     }
 

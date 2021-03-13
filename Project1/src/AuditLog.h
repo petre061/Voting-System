@@ -7,6 +7,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 #include "Loggable.h"
 /**
