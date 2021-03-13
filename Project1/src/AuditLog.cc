@@ -5,9 +5,7 @@
 
 AuditLog::AuditLog(const std::string& log_name)
     : filename(log_name), file(filename) {
-  // open file and get ready for writing
-    using namespace std;
-    file.open(filename, ios::out);
+  // File is opened (or at least attempted to be opened) in initialization list
 
   // Unable to open file specified, throw exception
   if (!file.is_open()) {
@@ -20,6 +18,7 @@ AuditLog::AuditLog(const std::string& log_name)
   file << "Log Start: " << get_time_date() << std::endl;
 }
 AuditLog::~AuditLog() {
+  // Write the time the log finishes
   file << "Log End: " << get_time_date() << std::endl;
   file.close();
 }
