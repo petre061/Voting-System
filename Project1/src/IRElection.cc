@@ -7,6 +7,7 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   std::string line, name;
@@ -48,36 +49,88 @@ void IRElection::parse_ballots() {
   ballot_file.close();
 }
 
-void IRElection::redistribute(uint8_t) {
-  // TODO: redistribute among candidates
-
-  // check for multiple losers
-  // break tie if necessary
-  // get loser ballot
-  // find next choice
-  // add to new candidate
-  // return
+void IRElection::redistribute(uint8_t candidate_index) {
+  // redistribute among candidates
+  std::queue<IRBallot> ballots;
+  candidates.at(candidate_index).eliminate();
+  ballots = candidates.at(candidate_index).get_ballots();
+  while(!ballots.empty()) {
+    IRBallot temp = ballots.front();
+    temp.increment_choice();
+    candidates.at(temp.get_choice()).add_ballot(temp);
+    ballots.pop();
+  }
+  return;
 }
 
 void IRElection::announce_results() {
-  // TODO: display winner, vote percentages, other info to screen
+  // TODO: add information to media report
+  std::cout << "The winner of the election is " << candidates.at(winnerIndex).get_name() << " of party " << candidates.at(winnerIndex).get_party() << " with " << candidates.at(winnerIndex).get_tally() * 100 / total_ballots << "% of the votes";
+  for(int i = 0; i < candidates.size(); i++) {
+    if(i == winnerIndex) {
+      // do nothing
+    }
+    else {
+      std::cout << candidates.at(i).get_name() << " had " << candidates.at(i).get_tally() * 100 / total_ballots << "% of the votes.";
+    }
+  }
+
+  return;
 }
 
 int IRElection::run() {
-  // TODO: driver function for IR Elections
+  // driver function for IR Elections
+  std::vector<int> votes(candidates.size());
   bool found_winner = false;
   int majority = (total_ballots + 1) / 2;
 
   // parse ballots
   parse_ballots();
 
+  
   // while no winner loop until determined
   while(!found_winner) {
+
+    for(int i = 0; i < candidates.size(); i++) {
+      if(!candidates.at(i).get_eliminated()) {
+        votes.at(i) = candidates.at(i).get_tally();
+      }
+    }
+
     // check for majority
-    // if majority then declare winner and break
-    // if tie for majority then tie break
-    // else redistribute and loop
+    auto most_votes = std::max_element(std::begin(votes), std::end(votes));
+    auto least_votes = std::min_element(std::begin(votes), std::end(votes));
+    int max_location = std::distance(std::begin(votes), most_votes);
+    int least_location = std::distance(std::begin(votes), least_votes);
+    find_max_values(votes, *most_votes);
+
+    if(*most_votes >= majority) {
+      found_winner = true;
+      if(max_indicies.size() == 1) {
+        winnerIndex = max_location;
+      }
+      else {
+        //TODO : Tie breaker
+      }  
+    }
+    else {
+      find_min_values(votes, *least_votes);
+
+      // case where single loser
+      if(min_indicies.size() == 1) {
+        redistribute(least_location);
+      }
+      else {
+        // TODO: Tie breaker and redistribute
+      }
+    }
+
+    votes.clear();
   }
+
+  announce_results();
+
+  return 0;
 }
 
 std::string IRElection::log() const {
@@ -102,4 +155,18 @@ std::string IRElection::log() const {
   // TODO(someone): further logging?
 
   return output.str();
+}
+
+void IRElection::find_max_values(std::vector<int> tallies, int max) {
+  for(int i = 0; i < tallies.size(); i++) {
+    if(tallies.at(i) && tallies.at(i) == max)
+      max_indicies.push_back(i);
+  }
+}
+
+void IRElection::find_max_values(std::vector<int> tallies, int min) {
+  for(int i = 0; i < tallies.size(); i++) {
+    if(tallies.at(i) && tallies.at(i) == min)
+      min_indicies.push_back(i);
+  }
 }

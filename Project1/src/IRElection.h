@@ -15,6 +15,9 @@
  */
 class IRElection : public Election {
  private:
+  int winnerIndex;
+  std::vector<int> max_indicies;
+  std::vector<int> min_indicies;
   /**
    * @brief The candidates in the election
    */
@@ -28,6 +31,8 @@ class IRElection : public Election {
   void parse_ballots();
   void redistribute(uint8_t candidate_index);
   void announce_results();
+  void find_max_values(std::vector<int> tallies, int max);
+  void find_min_values(std::vector<int> tallies, int min);
 
  public:
   explicit IRElection(const std::string& filename);
