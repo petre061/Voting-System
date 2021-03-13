@@ -111,8 +111,8 @@ int IRElection::run() {
         winnerIndex = max_location;
       }
       else {
-        //TODO : Tie breaker
-        TieBreaker::flip();
+        //Tie breaker
+        winnerIndex = max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
       }  
     }
     else {
@@ -123,9 +123,8 @@ int IRElection::run() {
         redistribute(least_location);
       }
       else {
-        // TODO: Tie breaker and redistribute
-        TieBreaker::flip();
-        redistribute(max_location);         // not sure if this is correct?? 
+        // Tie breaker and redistribute
+        redistribute(min_indicies.at(TieBreaker::resolve_tie(min_indicies.size()))); 
       }
     }
 
