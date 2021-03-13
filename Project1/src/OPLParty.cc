@@ -75,6 +75,8 @@ std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
         }
         else {
           result.push_back(top2->get_name());
+          candidate_max_heap.pop();
+          candidate_max_heap.push(top1);
         }
       }
     }
