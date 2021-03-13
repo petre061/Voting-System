@@ -56,7 +56,13 @@ class Election : public Loggable {
    */
   explicit Election(const std::string& election_type,
                     const std::string& ballots);
+  /**
+   * @brief Desctructor for Elections 
+   */
   virtual ~Election();
+  /**
+   * @brief Abstract method to be implemented by child election classes that runs the methods necessary for determining the results of the election
+   */
   virtual int run() = 0;
 };
 
