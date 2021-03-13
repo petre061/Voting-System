@@ -16,6 +16,7 @@
  */
 class OPLElection : public Election {
     private:
+        std::vector<int> max_indicies;
         std::vector<OPLCandidate*> candidates; 
         std::vector<OPLParty> parties;
         std::map<std::string, int> party_seats;
@@ -24,6 +25,7 @@ class OPLElection : public Election {
         void parse_ballots();
         void assign_seats();
         void announce_results();
+        void find_max_values(std::vector<int> tallies, int max);
 
     public:
         explicit OPLElection(std::string filename);

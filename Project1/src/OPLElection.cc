@@ -86,6 +86,7 @@ void OPLElection::parse_ballots() {
       continue;
     } else {
       // format ballot line and add ballot to specified candidate index
+      // TODO: I'm pretty sure get_choice is supposed to be used here?
       line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
       std::istringstream ss(line);
       while(getline(ss, index, ',')) {
@@ -106,12 +107,9 @@ void OPLElection::parse_ballots() {
 }
 
 void OPLElection::assign_seats() {
-  // TODO: add logic for tie break when one seat is available and 2 candidates have same number of votes
-  // TODO: add logic for tie break when one seat is available and 2 parties have same number of remaining votes
-  // TODO: add logic for when party has more seats than candidates
-
   // assign seats to party/candidate
   std::vector<int> remainders(parties.size());
+  std::vector<int> party_votes(parties.size());
   int total_seats = num_seats;
 
   // determine quota
@@ -123,19 +121,30 @@ void OPLElection::assign_seats() {
     total_seats = total_seats - seats;
     party_seats[parties.at(i).get_name()] = seats;
     remainders.at(i) = parties.at(i).get_tally() % quota;
+
+    // get parties tallies
+    party_votes.at(i) = parties.at(i).get_tally();
   }
 
   // rank parties by remaining votes and allocate seats in order of highest remaining votes
   while(total_seats > 0) {
     auto most_rem = std::max_element(std::begin(remainders), std::end(remainders));
     int index = std::distance(std::begin(remainders), most_rem);
-    party_seats[parties.at(index).get_name()]++;
-    total_seats--;
-    remainders.at(index) = 0;
+    find_max_values(party_votes, *most_rem);
+    if(max_indicies.size() == 1) {
+      party_seats[parties.at(index).get_name()]++;
+      total_seats--;
+      remainders.at(index) = 0;
+    }
+    else {
+      // TODO: Tie break 
+    }
   }
 
   // assign candidates to seats based on number of votes 
   for(int i = 0; i < parties.size(); i++) {
+    // TODO: add logic for when party has more seats than candidates
+    // TODO: add logic for tie break when one seat is available and multiple candidates have same number of votes
     party_candidates[parties.at(i).get_name()] = parties.at(i).get_top_n_candidate_names(party_seats[parties.at(i).get_name()]);
   }
 
@@ -156,6 +165,8 @@ void OPLElection::announce_results() {
     }
     std::cout << std::endl << std::endl;
   }
+
+  return;
 }
 
 int OPLElection::run() {
@@ -172,4 +183,11 @@ int OPLElection::run() {
 
 std::string OPLElection::log() const {
   // TODO: log OPL election movements/information
+}
+
+void OPLElection::find_max_values(std::vector<int> tallies, int max) {
+  for(int i = 0; i < tallies.size(); i++) {
+    if(tallies.at(i) && tallies.at(i) == max)
+      max_indicies.push_back(i);
+  }
 }
