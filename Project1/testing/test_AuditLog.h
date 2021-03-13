@@ -1,4 +1,4 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+// Copyright 2021, CSCI 5801 Spring 2021 Team 20
 
 #ifndef PROJECT1_TESTING_TEST_AUDITLOG_H_
 #define PROJECT1_TESTING_TEST_AUDITLOG_H_
@@ -20,6 +20,7 @@ class fixture_AuditLog : public ::testing::Test {
   void TearDown() {
     // Delete log if we haven't cleaned it up
     delete log;
+    log = nullptr;
   }
 };
 #endif  // PROJECT1_TESTING_TEST_AUDITLOG_H_

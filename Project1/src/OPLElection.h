@@ -4,6 +4,7 @@
 #define OPLELECTION_H_
 
 #include <string>
+#include <map>
 
 #include "Election.h"
 #include "OPLCandidate.h"
@@ -15,8 +16,10 @@
  */
 class OPLElection : public Election {
     private:
-        std::vector<OPLCandidate> candidates; 
+        std::vector<OPLCandidate*> candidates; 
         std::vector<OPLParty> parties;
+        std::map<std::string, int> party_seats;
+        std::map<std::string, std::vector<std::string>> party_candidates;
         uint16_t num_seats = 0;
         void parse_ballots();
         void assign_seats();

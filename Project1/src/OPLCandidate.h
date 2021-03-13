@@ -20,16 +20,12 @@ class OPLCandidate : public Loggable {
   std::queue<OPLBallot> ballots;
 
  public:
-<<<<<<< HEAD
-  explicit OPLCandidate(const std::string& candidate); // explicit keyword prevents compiler from using constructor for implicit conversion which can hide bugs
+  explicit OPLCandidate(const std::string& candidate); 
+  // explicit keyword prevents compiler from using constructor for implicit conversion which can hide bugs
   void add_ballot(OPLBallot new_ballot);
-=======
-  // explicit keyword prevents compiler from using constructor for implicit
-  // conversion which can hide bugs
-  explicit OPLCandidate(const std::string& candidate_name);
->>>>>>> e71830705aaeaf562d0db4d202a6a32662c460e6
   uint64_t get_tally();
   std::string log() const override;
+  std::string get_name();
 };
 
 #endif  // OPLCANDIDATE_H_

@@ -17,7 +17,7 @@
 class OPLParty : public Loggable {
  private:
   std::string pname;
-  std::queue<OPLCandidate*> candidates;
+  std::vector<OPLCandidate*> candidates;
 
  public:
   explicit OPLParty(
@@ -25,8 +25,10 @@ class OPLParty : public Loggable {
           name);  // explicit keyword prevents compiler from using constructor
                   // for implicit conversion which can hide bugs
   uint64_t get_tally();
-  void add_candidate(OPLCandidate new_candidate);
+  void add_candidate(OPLCandidate* new_candidate);
   std::string log() const override;
+  std::string get_name();
+  std::vector<std::string> get_top_n_candidate_names(int n);
 };
 
 #endif  // OPLPARTY_H_
