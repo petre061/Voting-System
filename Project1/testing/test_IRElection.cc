@@ -6,6 +6,10 @@ TEST_F(fixture_IRElection, IRElectionSRSExample) {
   // Test using the example file from the SRS document
   election = new IRElection("ballot_files/ir_example.csv");
 
+  // TODO(someone): more testing here
+
+  ASSERT_EQ(election->run(), 0);
+
   // Free up the election
   delete election;
   election = nullptr;
