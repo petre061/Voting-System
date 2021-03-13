@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 #include <algorithm>
+#include <queue>
 
 OPLParty::OPLParty(const std::string& name) {
   pname = name;
@@ -44,23 +45,30 @@ std::string OPLParty::get_name(){
 }
 
 std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
-  std::map<int, std::string> names;
-  std::vector<int> totals;
+
+  // custom comparator for OPL candidate max heap
+  auto comp = [](OPLCandidate* one, OPLCandidate* two) {
+    return one->get_tally() < two->get_tally();
+  };
+
+  // get top n candidates
+  std::priority_queue<OPLCandidate*, std::vector<OPLCandidate*>, decltype(comp)> candidate_max_heap(comp);
   std::vector<std::string> result;
   for(int i = 0; i < candidates.size(); i++) {
-    names[candidates.at(i)->get_tally()] = candidates.at(i)->get_name();
-    totals.push_back(candidates.at(i)->get_tally());
+    candidate_max_heap.push(candidates.at(i));
   }
   for(int i = 0; i < n; i++) {
-    auto highest_tally = std::max_element(std::begin(totals), std::end(totals));
-    int index = std::distance(std::begin(totals), highest_tally);
-    result.push_back(names[*highest_tally]);
-    totals.at(index) = 0;
+    if(candidate_max_heap.empty()) {
+      return result;
+    }
+    result.push_back(candidate_max_heap.top()->get_name());
+    candidate_max_heap.pop();
   }
 
   return result; 
 }
 
-
-
+std::vector<OPLCandidate*> OPLParty::get_candidates() {
+  return candidates;
+}
 // Creating / adding to candidates DS done in OPLElection class?

@@ -53,12 +53,18 @@ class OPLParty : public Loggable {
    */
   std::string get_name();
   /**
-   * @brief Get the top n candidate names object
+   * @brief Get the top n candidate names
    * 
    * @param n 
    * @return std::vector<std::string> 
    */
   std::vector<std::string> get_top_n_candidate_names(int n);
+  /**
+   * @brief Get the candidates vector
+   * 
+   * @return std::vector<OPLCandidate*> 
+   */
+  std::vector<OPLCandidate*> get_candidates();
 };
 
 #endif  // OPLPARTY_H_

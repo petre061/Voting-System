@@ -118,8 +118,16 @@ void OPLElection::assign_seats() {
   // assign initial seats to parties
   for(int i = 0; i < parties.size(); i++){
     int seats = (int)parties.at(i).get_tally() / quota;
-    total_seats = total_seats - seats;
-    party_seats[parties.at(i).get_name()] = seats;
+
+    // if party won more seats than candidates only give them seats equal to number of candidates
+    if(seats > parties.at(i).get_candidates().size()) {
+      total_seats = total_seats - parties.at(i).get_candidates().size();
+      party_seats[parties.at(i).get_name()] = parties.at(i).get_candidates().size();
+    }
+    else {
+      total_seats = total_seats - seats;
+      party_seats[parties.at(i).get_name()] = seats;
+    }
     remainders.at(i) = parties.at(i).get_tally() % quota;
 
     // get parties tallies
@@ -144,7 +152,6 @@ void OPLElection::assign_seats() {
 
   // assign candidates to seats based on number of votes 
   for(int i = 0; i < parties.size(); i++) {
-    // TODO: add logic for when party has more seats than candidates
     // TODO: add logic for tie break when one seat is available and multiple candidates have same number of votes
     party_candidates[parties.at(i).get_name()] = parties.at(i).get_top_n_candidate_names(party_seats[parties.at(i).get_name()]);
   }
