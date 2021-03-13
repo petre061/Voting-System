@@ -191,6 +191,40 @@ int OPLElection::run() {
 
 std::string OPLElection::log() const {
   // TODO: log OPL election movements/information
+    std::stringstream output;
+
+    output << "OPLElection: total_ballots=" << std::to_string(total_ballots);
+
+    // Print the candidate names
+     output << " candidates=[";
+
+  auto candidate = *candidates.begin();
+  if (!candidates.empty()) {
+    output << candidate->get_name();
+    ++candidate;
+  }
+  for (; candidate != *candidates.end(); ++candidate) {
+    output << ", " << candidate->get_name();
+    ++candidate;
+  }
+  output << "]";
+
+
+    // Print number of party seats
+    output << " party_seats=[";
+
+    auto pseats = party_seats.begin();
+    if (!party_seats.empty()) {
+        output << num_seats;
+        ++pseats;
+    }
+    for (; pseats != party_seats.end(); ++pseats) {
+        output << num_seats;
+        ++pseats;
+    }
+    output << "]";
+
+    return output.str();
 }
 
 void OPLElection::find_max_values(std::vector<int> tallies, int max) {
