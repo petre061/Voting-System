@@ -11,6 +11,9 @@ project(voting_system)
 # Add in the source
 add_subdirectory(src)
 
+# Add in documentation
+add_subdirectory(documentation)
+
 # Add in tests
 enable_testing()
 add_subdirectory(testing)
