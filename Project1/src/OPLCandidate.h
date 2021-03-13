@@ -27,6 +27,13 @@ class OPLCandidate : public Loggable {
   */
   explicit OPLCandidate(const std::string& candidate); // explicit keyword prevents compiler from using constructor for implicit conversion which can hide bugs
 /**
+ * @brief Add a ballot 
+ * 
+ * @return void 
+ */
+ void add_ballot(OPLBallot new_ballot);
+													   
+/**
  * @brief Get the tally object
  * 
  * @return uint64_t 
@@ -38,6 +45,10 @@ class OPLCandidate : public Loggable {
    * @return std::string 
    */
   std::string log() const override;
+  /**
+  * @return The name of the candidate
+  */
+  const std::string& get_name() const;
 };
 
 #endif  // OPLCANDIDATE_H_

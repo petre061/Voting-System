@@ -10,6 +10,8 @@
 #include "OPLCandidate.h"
 #include "OPLParty.h"
 #include "OPLBallot.h"
+#include <TieBreaker.h>
+
 
 /**
  * @brief

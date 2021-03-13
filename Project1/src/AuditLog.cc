@@ -5,7 +5,9 @@
 
 AuditLog::AuditLog(const std::string& log_name)
     : filename(log_name), file(filename) {
-  // TODO(someone): open file and get ready for writing
+  // open file and get ready for writing
+    using namespace std;
+    file.open(filename, ios::out);
 
   // Unable to open file specified, throw exception
   if (!file.is_open()) {

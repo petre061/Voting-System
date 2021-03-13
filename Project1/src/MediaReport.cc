@@ -3,10 +3,9 @@
 
 MediaReport::MediaReport(const std::string& report_name)
     : filename(report_name), file(filename) {
-  // If unable to open file specified, throw exception
+    // If unable to open file specified, throw exception
   if (!file.is_open()) {
-    throw std::invalid_argument("Unable to create MediaReport \'" + filename +
-                                "\'");
+    throw std::invalid_argument("Unable to create MediaReport \'" + filename + "\'");
   }
 
   // Write audit log header
