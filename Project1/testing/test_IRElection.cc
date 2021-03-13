@@ -2,7 +2,11 @@
 
 #include "test_IRElection.h"
 
-TEST_F(fixture_IRElection, unimplemented) {
-  // TODO(someone): Write this test
-  FAIL() << "Implement this test";
+TEST_F(fixture_IRElection, IRElectionSRSExample) {
+  // Test using the example file from the SRS document
+  election = new IRElection("ballot_files/ir_example.csv");
+
+  // Free up the election
+  delete election;
+  election = nullptr;
 }

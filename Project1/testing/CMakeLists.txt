@@ -34,5 +34,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}_test gtest_main ${CMAKE_PROJECT_NAME
 # Include this directory for includes
 target_include_directories(${CMAKE_PROJECT_NAME}_test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
+# Copy the test data into the build directory at configure time
+file(COPY ballot_files DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 # Add the test to the CMake test framework
 add_test(NAME ${CMAKE_PROJECT_NAME}_test COMMAND ${CMAKE_PROJECT_NAME}_test)
