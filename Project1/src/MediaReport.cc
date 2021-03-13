@@ -1,15 +1,19 @@
-// Copyright 2021 CSCI 5801 Spring 2021 Team 20
+// Copyright 2021, CSCI 5801 Spring 2021 Team 20
 #include "MediaReport.h"
 
 MediaReport::MediaReport(const std::string& report_name)
     : filename(report_name), file(filename) {
-    // If unable to open file specified, throw exception
+  // File is already (probably) open from initializer list
+
+  // If unable to open file specified, throw exception
   if (!file.is_open()) {
-    throw std::invalid_argument("Unable to create MediaReport \'" + filename + "\'");
+    throw std::invalid_argument("Unable to create MediaReport \'" + filename +
+                                "\'");
   }
 
-  // Write audit log header
+  // Write media report header
   file << "Voting System 1.0" << std::endl;
+  file << "Official Press Release" << std::endl;
   file << "Report Generated: " << get_time_date() << std::endl;
 }
 void MediaReport::write(const std::string& text) {
