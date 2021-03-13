@@ -1,6 +1,7 @@
 // Copyright 2021, CSCI 5801 Spring 2021 Team 20
 #include "test_OPLBallot.h"
 
+#include <stdexcept>
 #include <string>
 
 TEST_F(fixture_OPLBallot, OPLBallotCSVParse) {
@@ -10,14 +11,32 @@ TEST_F(fixture_OPLBallot, OPLBallotCSVParse) {
   delete ballot;
 
   // Test no choices
-  ballot = new OPLBallot(",,,,");
-  ASSERT_EQ(ballot->get_choice(), 255);
-  delete ballot;
+  try {
+    ballot = new OPLBallot(",,,,");
+
+    ASSERT_EQ(ballot->get_choice(), Ballot::NO_CHOICE);
+
+    delete ballot;
+  } catch (...) {
+    ballot = nullptr;
+    FAIL() << "Unable to create OPLBallot with no choices, get_choice() should "
+              "return NO_CHOICE";
+  }
 
   // Test empty string
-  ballot = new OPLBallot("");
-  ASSERT_EQ(ballot->get_choice(), 255);
-  delete ballot;
+  try {
+    ballot = new OPLBallot("");
+    ballot = nullptr;
+    FAIL() << "Should not be able to create OPLBallot with empty string";
+    delete ballot;
+  } catch (const std::invalid_argument& e) {
+    ASSERT_EQ(e.what(), "Invalid Ballot - Empty");
+  } catch (...) {
+    ballot = nullptr;
+    FAIL() << "OPLBallot should throw std::invalid_argument on empty line";
+  }
+
+  ballot = nullptr;
 }
 TEST_F(fixture_OPLBallot, OPLBallotLogOnceChoice) {
   // Test a choice
