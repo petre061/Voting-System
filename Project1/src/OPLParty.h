@@ -10,6 +10,7 @@
 
 #include "Loggable.h"
 #include "OPLCandidate.h"
+#include "TieBreaker.h"
 
 /**
  * @brief

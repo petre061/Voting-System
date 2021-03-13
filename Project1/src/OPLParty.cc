@@ -1,6 +1,7 @@
 // Copyright 2021, CSCI 5801 Spring 2021 Team 20
 
 #include "OPLParty.h"
+#include "TieBreaker.h"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -54,17 +55,38 @@ std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
   // get top n candidates
   std::priority_queue<OPLCandidate*, std::vector<OPLCandidate*>, decltype(comp)> candidate_max_heap(comp);
   std::vector<std::string> result;
+  OPLCandidate* top1;
+  OPLCandidate* top2;
+
+  // push candidates into heap
   for(int i = 0; i < candidates.size(); i++) {
     candidate_max_heap.push(candidates.at(i));
   }
-  for(int i = 0; i < n; i++) {
-    if(candidate_max_heap.empty()) {
-      return result;
-    }
-    result.push_back(candidate_max_heap.top()->get_name());
-    candidate_max_heap.pop();
-  }
+  while(n > 0) {
 
+    // get top 2 candidates if possible and break tie if necessary
+    top1 = candidate_max_heap.top();
+    candidate_max_heap.pop();
+    if(!candidate_max_heap.empty()) {
+      top2 = candidate_max_heap.top();
+      if(top1->get_tally() == top2->get_tally()) {
+        if(TieBreaker::flip()) {
+          result.push_back(top1->get_name());
+        }
+        else {
+          result.push_back(top2->get_name());
+        }
+      }
+    }
+
+    // otherwise just add the top candidate name
+    else {
+      result.push_back(top1->get_name());
+    }
+
+    // decrement seats available
+    n--;
+  }
   return result; 
 }
 

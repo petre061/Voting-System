@@ -145,14 +145,16 @@ void OPLElection::assign_seats() {
       remainders.at(index) = 0;
     }
     else {
-      // TODO: Tie break 
-      TieBreaker::flip();
+      // Tie break 
+      int w_index = max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
+      party_seats[parties.at(w_index).get_name()]++;
+      total_seats--;
+      remainders.at(w_index) = 0;
     }
   }
 
   // assign candidates to seats based on number of votes 
   for(int i = 0; i < parties.size(); i++) {
-    // TODO: add logic for tie break when one seat is available and multiple candidates have same number of votes
     party_candidates[parties.at(i).get_name()] = parties.at(i).get_top_n_candidate_names(party_seats[parties.at(i).get_name()]);
   }
 
