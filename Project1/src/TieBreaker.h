@@ -40,6 +40,12 @@ class TieBreaker {
    * @return     A true/false value representing the coin.
    */
   static bool flip();
+  /**
+   * @brief  Resolves a tie between num items
+   *
+   * @return A number between zero and (num-1) inclusive
+   */
+  static uint8_t resolve_tie(uint8_t num);
 };
 
 #endif  // TIEBREAKER_H_
