@@ -2,6 +2,7 @@
 // Copyright CSCI 5801 Spring 2021 Team 20
 
 #include "IRElection.h"
+#include "Ballot.h"
 
 #include <algorithm>
 #include <fstream>
@@ -42,9 +43,11 @@ void IRElection::parse_ballots() {
       continue;
     } else {
       // store ballots in candidates
-      IRBallot* temp = new IRBallot(line);
-      int c_idx = temp->get_choice();
-      candidates.at(c_idx).add_ballot(IRBallot(line));
+      IRBallot temp(line);
+      int c_idx = temp.get_choice();
+      if (c_idx != Ballot::NO_CHOICE) {
+        candidates.at(c_idx).add_ballot(temp);
+      }
     }
   }
   // Can close here otherwise it will also be called in destructor
@@ -59,7 +62,9 @@ void IRElection::redistribute(uint8_t candidate_index) {
   while (!ballots.empty()) {
     IRBallot temp = ballots.front();
     temp.increment_choice();
-    candidates.at(temp.get_choice()).add_ballot(temp);
+    if(temp.get_choice() != Ballot::NO_CHOICE) {
+      candidates.at(temp.get_choice()).add_ballot(temp);
+    } 
     ballots.pop();
   }
   return;
@@ -130,7 +135,8 @@ int IRElection::run() {
             min_indicies.at(TieBreaker::resolve_tie(min_indicies.size())));
       }
     }
-
+    max_indicies.clear();
+    min_indicies.clear();
     votes.clear();
   }
 
