@@ -105,12 +105,11 @@ void OPLElection::assign_seats() {
     // get parties tallies
     party_votes.at(i) = parties.at(i).get_tally();
   }
-
   // rank parties by remaining votes and allocate seats in order of highest remaining votes
   while(total_seats > 0) {
     auto most_rem = std::max_element(std::begin(remainders), std::end(remainders));
     int index = std::distance(std::begin(remainders), most_rem);
-    find_max_values(party_votes, *most_rem);
+    find_max_values(remainders, *most_rem);
     if(max_indicies.size() == 1) {
       party_seats[parties.at(index).get_name()]++;
       total_seats--;
@@ -118,6 +117,8 @@ void OPLElection::assign_seats() {
     }
     else {
       // Tie break 
+      std::cout << TieBreaker::resolve_tie(max_indicies.size()) << std::endl;
+      std::cout << max_indicies.size() << std::endl;
       int w_index = max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
       party_seats[parties.at(w_index).get_name()]++;
       total_seats--;
@@ -130,8 +131,6 @@ void OPLElection::assign_seats() {
   for(int i = 0; i < parties.size(); i++) {
     party_candidates[parties.at(i).get_name()] = parties.at(i).get_top_n_candidate_names(party_seats[parties.at(i).get_name()]);
   }
-
-  return;
 }
 
 void OPLElection::announce_results() {
@@ -204,6 +203,8 @@ std::string OPLElection::log() const {
 
 void OPLElection::find_max_values(std::vector<int> tallies, int max) {
   for(int i = 0; i < tallies.size(); i++) {
+    std::cout << tallies.at(i) << std::endl;
+    std::cout << max << std::endl;
     if(tallies.at(i) && tallies.at(i) == max)
       max_indicies.push_back(i);
   }
