@@ -3,12 +3,12 @@
 
 #include "IRElection.h"
 
-#include <sstream>
-#include <string>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-
+#include <queue>
+#include <sstream>
+#include <string>
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   std::string line, name;
@@ -22,8 +22,9 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
       line.erase(std::remove(line.begin(), line.end(), '('), line.end());
       line.erase(std::remove(line.begin(), line.end(), ')'), line.end());
       std::istringstream ss(line);
-      while(getline(ss, name, ',')) {
-        candidates.push_back(IRCandidate(name.substr(0, name.length() - 1), name.substr(name.length() - 1)));
+      while (getline(ss, name, ',')) {
+        candidates.push_back(IRCandidate(name.substr(0, name.length() - 1),
+                                         name.substr(name.length() - 1)));
       }
     } else if (i == 3) {
       total_ballots = std::stoi(line);
@@ -55,7 +56,7 @@ void IRElection::redistribute(uint8_t candidate_index) {
   std::queue<IRBallot> ballots;
   candidates.at(candidate_index).eliminate();
   ballots = candidates.at(candidate_index).get_ballots();
-  while(!ballots.empty()) {
+  while (!ballots.empty()) {
     IRBallot temp = ballots.front();
     temp.increment_choice();
     candidates.at(temp.get_choice()).add_ballot(temp);
@@ -66,13 +67,18 @@ void IRElection::redistribute(uint8_t candidate_index) {
 
 void IRElection::announce_results() {
   // add information to media report
-  std::cout << "The winner of the election is " << candidates.at(winnerIndex).get_name() << " of party " << candidates.at(winnerIndex).get_party() << " with " << candidates.at(winnerIndex).get_tally() * 100 / total_ballots << "% of the votes";
-  for(int i = 0; i < candidates.size(); i++) {
-    if(i == winnerIndex) {
+  std::cout << "The winner of the election is "
+            << candidates.at(winnerIndex).get_name() << " of party "
+            << candidates.at(winnerIndex).get_party() << " with "
+            << candidates.at(winnerIndex).get_tally() * 100 / total_ballots
+            << "% of the votes";
+  for (int i = 0; i < candidates.size(); i++) {
+    if (i == winnerIndex) {
       // do nothing
-    }
-    else {
-      std::cout << candidates.at(i).get_name() << " had " << candidates.at(i).get_tally() * 100 / total_ballots << "% of the votes.";
+    } else {
+      std::cout << candidates.at(i).get_name() << " had "
+                << candidates.at(i).get_tally() * 100 / total_ballots
+                << "% of the votes.";
     }
   }
 
@@ -88,12 +94,10 @@ int IRElection::run() {
   // parse ballots
   parse_ballots();
 
-  
   // while no winner loop until determined
-  while(!found_winner) {
-
-    for(int i = 0; i < candidates.size(); i++) {
-      if(!candidates.at(i).get_eliminated()) {
+  while (!found_winner) {
+    for (int i = 0; i < candidates.size(); i++) {
+      if (!candidates.at(i).get_eliminated()) {
         votes.at(i) = candidates.at(i).get_tally();
       }
     }
@@ -105,26 +109,25 @@ int IRElection::run() {
     int least_location = std::distance(std::begin(votes), least_votes);
     find_max_values(votes, *most_votes);
 
-    if(*most_votes >= majority) {
+    if (*most_votes >= majority) {
       found_winner = true;
-      if(max_indicies.size() == 1) {
+      if (max_indicies.size() == 1) {
         winnerIndex = max_location;
+      } else {
+        // Tie breaker
+        winnerIndex =
+            max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
       }
-      else {
-        //Tie breaker
-        winnerIndex = max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
-      }  
-    }
-    else {
+    } else {
       find_min_values(votes, *least_votes);
 
       // case where single loser
-      if(min_indicies.size() == 1) {
+      if (min_indicies.size() == 1) {
         redistribute(least_location);
-      }
-      else {
+      } else {
         // Tie breaker and redistribute
-        redistribute(min_indicies.at(TieBreaker::resolve_tie(min_indicies.size()))); 
+        redistribute(
+            min_indicies.at(TieBreaker::resolve_tie(min_indicies.size())));
       }
     }
 
@@ -161,15 +164,17 @@ std::string IRElection::log() const {
 }
 
 void IRElection::find_max_values(std::vector<int> tallies, int max) {
-  for(int i = 0; i < tallies.size(); i++) {
-    if(tallies.at(i) && tallies.at(i) == max)
+  for (int i = 0; i < tallies.size(); i++) {
+    if (tallies.at(i) && tallies.at(i) == max) {
       max_indicies.push_back(i);
+    }
   }
 }
 
-void IRElection::find_max_values(std::vector<int> tallies, int min) {
-  for(int i = 0; i < tallies.size(); i++) {
-    if(tallies.at(i) && tallies.at(i) == min)
+void IRElection::find_min_values(std::vector<int> tallies, int min) {
+  for (int i = 0; i < tallies.size(); i++) {
+    if (tallies.at(i) && tallies.at(i) == min) {
       min_indicies.push_back(i);
+    }
   }
 }
