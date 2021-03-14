@@ -45,50 +45,75 @@ std::string OPLParty::get_name(){
 }
 
 std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
+  // // custom comparator for OPL candidate max heap
+  // auto comp = [](OPLCandidate* one, OPLCandidate* two) {
+  //   return one->get_tally() < two->get_tally();
+  // };
 
-  // custom comparator for OPL candidate max heap
-  auto comp = [](OPLCandidate* one, OPLCandidate* two) {
-    return one->get_tally() < two->get_tally();
-  };
+  // // get top n candidates
+  // std::priority_queue<OPLCandidate*, std::vector<OPLCandidate*>, decltype(comp)> candidate_max_heap(comp);
+  // std::vector<std::string> result;
+  // OPLCandidate* top1;
+  // OPLCandidate* top2;
 
-  // get top n candidates
-  std::priority_queue<OPLCandidate*, std::vector<OPLCandidate*>, decltype(comp)> candidate_max_heap(comp);
+  // // push candidates into heap
+  // for(int i = 0; i < candidates.size(); i++) {
+  //   candidate_max_heap.push(candidates.at(i));
+  // }
+  // while(n > 0) {
+
+  //   // get top 2 candidates if possible and break tie if necessary
+  //   top1 = candidate_max_heap.top();
+  //   candidate_max_heap.pop();
+  //   if(!candidate_max_heap.empty()) {
+  //     top2 = candidate_max_heap.top();
+  //     if(top1->get_tally() == top2->get_tally()) {
+  //       if(TieBreaker::flip()) {
+  //         result.push_back(top1->get_name());
+  //       }
+  //       else {
+  //         result.push_back(top2->get_name());
+  //         candidate_max_heap.pop();
+  //         candidate_max_heap.push(top1);
+  //       }
+  //     }
+  //   }
+
+  //   // otherwise just add the top candidate name
+  //   else {
+  //     result.push_back(top1->get_name());
+  //   }
+
+  //   // decrement seats available
+  //   n--;
+  // }
+  // return result; 
+  std::vector<OPLCandidate*> candidate_list = get_candidates();
   std::vector<std::string> result;
-  OPLCandidate* top1;
-  OPLCandidate* top2;
-
-  // push candidates into heap
-  for(int i = 0; i < candidates.size(); i++) {
-    candidate_max_heap.push(candidates.at(i));
+  int seats = n;
+  if(seats > candidate_list.size()) {
+    throw std::invalid_argument("Request of candidates is larger than number of candidates associated with party");
   }
-  while(n > 0) {
-
-    // get top 2 candidates if possible and break tie if necessary
-    top1 = candidate_max_heap.top();
-    candidate_max_heap.pop();
-    if(!candidate_max_heap.empty()) {
-      top2 = candidate_max_heap.top();
-      if(top1->get_tally() == top2->get_tally()) {
-        if(TieBreaker::flip()) {
-          result.push_back(top1->get_name());
-        }
-        else {
-          result.push_back(top2->get_name());
-          candidate_max_heap.pop();
-          candidate_max_heap.push(top1);
-        }
+  while(seats > 0) {
+    int tally = 0;
+    int index = 255;
+    for(int i = 0; i < candidate_list.size(); i++) {
+      if(candidate_list.at(i)->get_tally() > tally) {
+        tally = candidate_list.at(i)->get_tally();
+        index = i;
       }
     }
-
-    // otherwise just add the top candidate name
-    else {
-      result.push_back(top1->get_name());
+    if(index != 255) {
+      result.push_back(candidate_list.at(index)->get_name());
+      std::vector<OPLCandidate*>::iterator i = candidate_list.begin() + index;
+      candidate_list.erase(i);
+      seats --;
     }
-
-    // decrement seats available
-    n--;
+    else {
+      seats = 0;
+    }
   }
-  return result; 
+  return result;
 }
 
 std::vector<OPLCandidate*> OPLParty::get_candidates() {
