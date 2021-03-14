@@ -44,21 +44,6 @@ OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
         } else if (p_idx.find(party) != p_idx.end()){
           parties.at(p_idx.find(party)->second).add_candidate(temp);
 
-          // if the party does not exist but they are a unique independent then add to independent 
-        } else if (p_idx.find(party) == p_idx.end() && party.compare("D") != 0 || party.compare("R") != 0 || party.compare("I") != 0) {
-
-          // if independent doesn't exist yet then add it 
-          if (p_idx.find("I") == p_idx.end()) {
-            parties.push_back(OPLParty("I"));
-            parties.back().add_candidate(temp);
-            p_idx["I"] = p_idx_count++;
-          }
-
-          // if independent already exists then add to exisiting independent party
-          else {
-            parties.at(p_idx.find("I")->second).add_candidate(temp);
-          }
-
           // party does not exist yet so add
         } else {
           parties.push_back(OPLParty(party));
@@ -78,26 +63,13 @@ void OPLElection::parse_ballots() {
   // TODO: finish parse ballots
 
   // File is already open from constructor of Election
-  int lineNum = 0, candidate_idx = 0;
+  int candidate_idx = 0;
   std::string line, index;
   while (getline(ballot_file, line)) {
-    ++lineNum;
-    if (lineNum < 6) {
-      continue;
-    } else {
-      // format ballot line and add ballot to specified candidate index
-      // TODO: I'm pretty sure get_choice is supposed to be used here?
-      line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
-      std::istringstream ss(line);
-      while(getline(ss, index, ',')) {
-        if(index.length() == 0) {
-          candidate_idx++;
-        } else {
-          break;
-        }
-      }
-      candidates.at(candidate_idx)->add_ballot(OPLBallot(line));
-      candidate_idx = 0;
+    OPLBallot temp(line);
+    candidate_idx = temp.get_choice();
+    if (candidate_idx != Ballot::NO_CHOICE) {
+      candidates.at(candidate_idx)->add_ballot(temp);
     }
   }
   // We can close ballot file here since we are probably done with it.
@@ -151,6 +123,7 @@ void OPLElection::assign_seats() {
       total_seats--;
       remainders.at(w_index) = 0;
     }
+    max_indicies.clear();
   }
 
   // assign candidates to seats based on number of votes 
