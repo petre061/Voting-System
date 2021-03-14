@@ -13,4 +13,10 @@ build
 
 # Visual Studio Settings
 .vscode
+
+# Clangd Cache
 .cache
+
+# voting_system Outputs
+audit_log*
+media_report*
