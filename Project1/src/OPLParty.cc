@@ -33,14 +33,11 @@ std::string OPLParty::log() const {
   output << "OPL Party " << pname << ": [";
   for(int i = 0; i < candidates.size(); i++) {
     // For all OPLCandidate objects attributed to specific OPLParty:
-        for(int j = 0; j < candidates.at(i)->get_tally(); j++) {
-          // For all OPLBallot objects attributed to specific OPLCandidate:
-          output << candidates.at(j)->log() << ",";
-          // Display the ballot ID and choice for each OPLBallot for each candidate in the party
-    }   
-    output << "]";
-    return output.str();
+    output << candidates.at(i)->log() << ",";
+    // Display the ballot ID and choice for each OPLBallot for each candidate in the party   
   }
+  output << "]";
+  return output.str();
 }
 
 std::string OPLParty::get_name(){
