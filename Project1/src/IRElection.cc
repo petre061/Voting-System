@@ -2,7 +2,6 @@
 // Copyright CSCI 5801 Spring 2021 Team 20
 
 #include "IRElection.h"
-#include "Ballot.h"
 
 #include <algorithm>
 #include <fstream>
@@ -10,6 +9,8 @@
 #include <queue>
 #include <sstream>
 #include <string>
+
+#include "Ballot.h"
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   std::string line, name;
@@ -24,6 +25,7 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
       line.erase(std::remove(line.begin(), line.end(), ')'), line.end());
       std::istringstream ss(line);
       while (getline(ss, name, ',')) {
+        // TODO: switch this to allow more than 1 character for the party
         candidates.push_back(IRCandidate(name.substr(0, name.length() - 1),
                                          name.substr(name.length() - 1)));
       }
@@ -34,22 +36,35 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
 }
 
 void IRElection::parse_ballots() {
+  audit_log.log("Parsing Ballots");
+
   // File is already open from Election constructor
-  int lineNum = 0;
   std::string line;
   while (getline(ballot_file, line)) {
     // store ballots in candidates
     IRBallot temp(line);
     int c_idx = temp.get_choice();
     if (c_idx != Ballot::NO_CHOICE) {
+      // Put ballot into candidate
+      audit_log.log(temp);
       candidates.at(c_idx).add_ballot(temp);
+    } else {
+      // Discard ballot without choice
+      audit_log.log("Ballot with no choice discarded:");
+      audit_log.log(temp);
     }
   }
   // Can close here otherwise it will also be called in destructor
   ballot_file.close();
+
+  audit_log.log("Done Parsing Ballots");
 }
 
 void IRElection::redistribute(uint8_t candidate_index) {
+  audit_log.log("Redistributing candidate at index " +
+                std::to_string(candidate_index) + ":");
+  audit_log.log(candidates[candidate_index]);
+
   // redistribute among candidates
   std::queue<IRBallot> ballots;
   candidates.at(candidate_index).eliminate();
@@ -57,12 +72,15 @@ void IRElection::redistribute(uint8_t candidate_index) {
   while (!ballots.empty()) {
     IRBallot temp = ballots.front();
     temp.increment_choice();
-    if(temp.get_choice() != Ballot::NO_CHOICE) {
+    if (temp.get_choice() != Ballot::NO_CHOICE) {
       candidates.at(temp.get_choice()).add_ballot(temp);
-    } 
+    }
     ballots.pop();
   }
-  return;
+
+  audit_log.log("Finished redistributing candidate at index " +
+                std::to_string(candidate_index) + ":");
+  audit_log.log(candidates[candidate_index]);
 }
 
 void IRElection::announce_results() {
@@ -81,8 +99,6 @@ void IRElection::announce_results() {
                 << "% of the votes." << std::endl;
     }
   }
-
-  return;
 }
 
 int IRElection::run() {
