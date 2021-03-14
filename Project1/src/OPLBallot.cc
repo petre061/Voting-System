@@ -27,7 +27,7 @@ OPLBallot::OPLBallot(const std::string& line) {
     i++;
     parsedline.push_back(substr);
   }
-  throw std::invalid_argument("Invalid Ballot - no choice selected");
+  //throw std::invalid_argument("Invalid Ballot - no choice selected");
 }
 uint8_t OPLBallot::get_choice() const {
   // Return the current choice

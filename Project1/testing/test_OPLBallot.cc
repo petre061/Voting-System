@@ -4,21 +4,21 @@
 #include <stdexcept>
 #include <string>
 
-// TEST_F(fixture_OPLBallot, OPLBallotCSVParse_1choice) {
-//   // Test basic functionality
-//   ballot = new OPLBallot("1,,,");
-//   ASSERT_EQ(ballot->get_choice(), 0);
-//   delete ballot;
-// }
-// TEST_F(fixture_OPLBallot, OPLBallotCSVParse_0choice) {
-//     ballot = new OPLBallot(",,,,");
-//     ASSERT_EQ(ballot->get_choice(), Ballot::NO_CHOICE);
-//     delete ballot;
-//   }
+TEST_F(fixture_OPLBallot, OPLBallotCSVParse_1choice) {
+  // Test basic functionality
+  OPLBallot* ballot = new OPLBallot("1,,,");
+  ASSERT_EQ(ballot->get_choice(), 0);
+  delete ballot;
+}
+TEST_F(fixture_OPLBallot, OPLBallotCSVParse_0choice) {
+    OPLBallot* ballot = new OPLBallot(",,,,");
+    ASSERT_EQ(ballot->get_choice(), Ballot::NO_CHOICE);
+    delete ballot;
+  }
 // TEST_F(fixture_OPLBallot, OPLBallotCSVParse_emptystring {
 //   // Test empty string
 //   try {
-//     ballot = new OPLBallot("");
+//     OPLBallot* ballot = new OPLBallot("");
 //     ballot = nullptr;
 //     FAIL() << "Should not be able to create OPLBallot with empty string";
 //     delete ballot;

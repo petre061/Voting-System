@@ -6,13 +6,18 @@
 #include "OPLBallot.h"
 #include "OPLCandidate.h"
 
-TEST_F(fixture_OPLCandidate, OPLCandidateFunctionality) {
+TEST_F(fixture_OPLCandidate, OPLCandidate_empty_log) {
   // Test basic functionality, empty candidate
-  candidate = new OPLCandidate("Barack Mobamba");
+  OPLCandidate* candidate = new OPLCandidate("Barack Mobamba");
   ASSERT_EQ(candidate->log(), "Candidate Barack Mobamba: ballots =[]");
+  delete candidate;
+}
+TEST_F(fixture_OPLCandidate, OPLCandidate_empty_gettally) {
+  OPLCandidate* candidate = new OPLCandidate("Barack Mobamba");
   ASSERT_EQ(candidate->get_tally(), 0);
   delete candidate;
-
+}
+TEST_F(fixture_OPLCandidate, OPLCandidate_gettally) {
   // Test 1 ballot
   OPLCandidate* candidate1 = new OPLCandidate("Al Gore");
   candidate1->add_ballot(OPLBallot("1,,,"));

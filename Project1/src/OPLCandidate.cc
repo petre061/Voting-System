@@ -24,7 +24,7 @@ std::string OPLCandidate::log() const { // log of all ballots in candidate's cat
     std::stringstream output;
     // Create new OPLBallot queue and copy ballots to it
     std::queue<OPLBallot> temp = ballots;
-    output << "Candidate << " << name << " : ballots =[";
+    output << "Candidate " << name << ": ballots =[";
     // While the new OPLBallot queue is not empty, output the log() method of each element to output, and pop it off the queue
     while (!temp.empty()) {
         output << temp.front().log() << ",";

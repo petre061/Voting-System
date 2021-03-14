@@ -6,8 +6,8 @@
 #include "OPLParty.h"
 
 TEST_F(fixture_OPLElection, OPLElectionFunctionality) {
-  // Test basic functionality, empty candidate
-  election = new OPLElection("test_OPLElection_ex1.csv");
+  // Test basic functionality
+  election = new OPLElection("./ballot_files/opl_example.csv");
   election->run();
-  // ASSERT_EQ(party->)
+  ASSERT_EQ(election->log(),"");
 }
