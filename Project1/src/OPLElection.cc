@@ -117,8 +117,6 @@ void OPLElection::assign_seats() {
     }
     else {
       // Tie break 
-      std::cout << TieBreaker::resolve_tie(max_indicies.size()) << std::endl;
-      std::cout << max_indicies.size() << std::endl;
       int w_index = max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
       party_seats[parties.at(w_index).get_name()]++;
       total_seats--;
@@ -203,8 +201,6 @@ std::string OPLElection::log() const {
 
 void OPLElection::find_max_values(std::vector<int> tallies, int max) {
   for(int i = 0; i < tallies.size(); i++) {
-    std::cout << tallies.at(i) << std::endl;
-    std::cout << max << std::endl;
     if(tallies.at(i) && tallies.at(i) == max)
       max_indicies.push_back(i);
   }
