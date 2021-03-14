@@ -38,16 +38,11 @@ void IRElection::parse_ballots() {
   int lineNum = 0;
   std::string line;
   while (getline(ballot_file, line)) {
-    ++lineNum;
-    if (lineNum < 5) {
-      continue;
-    } else {
-      // store ballots in candidates
-      IRBallot temp(line);
-      int c_idx = temp.get_choice();
-      if (c_idx != Ballot::NO_CHOICE) {
-        candidates.at(c_idx).add_ballot(temp);
-      }
+    // store ballots in candidates
+    IRBallot temp(line);
+    int c_idx = temp.get_choice();
+    if (c_idx != Ballot::NO_CHOICE) {
+      candidates.at(c_idx).add_ballot(temp);
     }
   }
   // Can close here otherwise it will also be called in destructor
@@ -76,14 +71,14 @@ void IRElection::announce_results() {
             << candidates.at(winnerIndex).get_name() << " of party "
             << candidates.at(winnerIndex).get_party() << " with "
             << candidates.at(winnerIndex).get_tally() * 100 / total_ballots
-            << "% of the votes";
+            << "% of the votes" << std::endl;
   for (int i = 0; i < candidates.size(); i++) {
     if (i == winnerIndex) {
       // do nothing
     } else {
       std::cout << candidates.at(i).get_name() << " had "
                 << candidates.at(i).get_tally() * 100 / total_ballots
-                << "% of the votes.";
+                << "% of the votes." << std::endl;
     }
   }
 
