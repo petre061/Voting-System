@@ -13,6 +13,9 @@
 #include "Ballot.h"
 
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
+  audit_log.log("Starting Independent Runoff Election");
+
+  audit_log.log("Parsing File Header");
   std::string line, name;
   for (int i = 0; i < 4; i++) {
     getline(ballot_file, line);
@@ -31,8 +34,20 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
                                          name.substr(name.length() - 1)));
       }
     } else if (i == 3) {
-      total_ballots = std::stoi(line);
+      total_ballots = std::stoull(line);
     }
+  }
+  audit_log.log("Finished Parsing Election Header");
+
+  // Log parsed header data
+  audit_log.log("Election Type: " + type);
+  audit_log.log("Total Ballots: " + std::to_string(total_ballots));
+
+  // Log parsed candidates
+  audit_log.log("Parsed " + std::to_string(candidates.size()) +
+                " Candididates:");
+  for (auto& can : candidates) {
+    audit_log.log(can);
   }
 }
 

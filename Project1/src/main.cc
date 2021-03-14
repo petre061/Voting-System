@@ -22,5 +22,12 @@ int main(int argc, char const* argv[]) {
     return 1;
   }
 
-  return election->run();
+  // Run the election logic
+  int result = election->run();
+
+  // Delete the election, calling destructors along the way
+  delete election;
+
+  // Return the result of out election run call
+  return result;
 }
