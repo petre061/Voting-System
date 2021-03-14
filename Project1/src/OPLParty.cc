@@ -15,6 +15,7 @@ OPLParty::OPLParty(const std::string& name) {
 
 uint64_t OPLParty::get_tally() {
   uint64_t tally =0;
+  // Iterate through the length of the list of candidates attributed to the OPLParty instance, and add their tally() returns to a total party tally
   for (int i = 0; i < candidates.size(); i++) {
     tally += candidates.at(i)->get_tally();
   }
@@ -22,6 +23,7 @@ uint64_t OPLParty::get_tally() {
 }
 
 void OPLParty::add_candidate(OPLCandidate* new_candidate) {
+  // Add a new candidate to the OPLParty's list of attributed candidates
   candidates.push_back(new_candidate);
   return;
 }
