@@ -1,4 +1,14 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file Loggable.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares an interface to make inherting classes loggable
+ * with the AuditLog class
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef PROJECT1_SRC_LOGGABLE_H_
 #define PROJECT1_SRC_LOGGABLE_H_

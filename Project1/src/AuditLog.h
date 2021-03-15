@@ -1,4 +1,13 @@
-// Copyright 2021 CSCI 5801 Spring 2021 Team 20
+/**
+ * @file AuditLog.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares the AuditLog class.
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef PROJECT1_SRC_AUDITLOG_H_
 #define PROJECT1_SRC_AUDITLOG_H_
@@ -6,7 +15,6 @@
 #include <chrono>  // NOLINT[build/c++11]
 #include <ctime>
 #include <fstream>
-#include <iostream>
 #include <string>
 
 #include "Loggable.h"

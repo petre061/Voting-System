@@ -1,4 +1,14 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file Election.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file defines the Election base class that has basic functionality
+ * for different election types
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef PROJECT1_SRC_ELECTION_H_
 #define PROJECT1_SRC_ELECTION_H_
@@ -11,7 +21,8 @@
 #include "MediaReport.h"
 
 /**
- * @brief
+ * @brief The Election class implements basic functionality for different
+ * election types
  */
 class Election : public Loggable {
  private:
@@ -57,11 +68,12 @@ class Election : public Loggable {
   explicit Election(const std::string& election_type,
                     const std::string& ballots);
   /**
-   * @brief Desctructor for Elections 
+   * @brief Desctructor for Elections
    */
   virtual ~Election();
   /**
-   * @brief Abstract method to be implemented by child election classes that runs the methods necessary for determining the results of the election
+   * @brief Abstract method to be implemented by child election classes that
+   * runs the methods necessary for determining the results of the election
    */
   virtual int run() = 0;
 };

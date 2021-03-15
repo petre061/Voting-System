@@ -1,4 +1,13 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file IRBallot.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares a ballot for an Independant Runoff election
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef PROJECT1_SRC_IRBALLOT_H_
 #define PROJECT1_SRC_IRBALLOT_H_
@@ -15,9 +24,22 @@
  */
 class IRBallot : public Ballot {
  private:
+  /**
+   * @brief A list of candidate indices in order of preference.
+   *
+   * This is accessed through @ref get_choice() and the next choice is selected
+   * with @ref increment_choice()
+   */
   std::vector<uint8_t> choices;
+  /**
+   * @brief The index of the current choice
+   *
+   */
   uint8_t choice_index = 0;
-
+  /**
+   * @brief A sorter that sorts candidate index by preference
+   *
+   */
   static bool choice_sorter(const std::pair<uint8_t, uint8_t>& a,
                             const std::pair<uint8_t, uint8_t>& b);
 

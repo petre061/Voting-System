@@ -1,7 +1,16 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file TieBreaker.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares a class for easily breaking ties by flipping a coin
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
-#ifndef TIEBREAKER_H_
-#define TIEBREAKER_H_
+#ifndef PROJECT1_SRC_TIEBREAKER_H_
+#define PROJECT1_SRC_TIEBREAKER_H_
 
 #include <random>
 /**
@@ -48,4 +57,4 @@ class TieBreaker {
   static uint8_t resolve_tie(uint8_t num);
 };
 
-#endif  // TIEBREAKER_H_
+#endif  // PROJECT1_SRC_TIEBREAKER_H_

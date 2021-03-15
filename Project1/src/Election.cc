@@ -1,5 +1,13 @@
-
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file Election.cc
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implements basic Election functionality
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #include "Election.h"
 

@@ -1,4 +1,13 @@
-// Copyright 2021 CSCI 5801 Spring 2021 Team 20
+/**
+ * @file AuditLog.cc
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implementes the AuditLog class.
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 #include "AuditLog.h"
 
 #include <stdexcept>
