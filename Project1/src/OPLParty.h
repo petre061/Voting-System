@@ -1,4 +1,16 @@
 // Copyright 2021, CSCI 5801 Spring 2021 Team 20
+/**
+ * @file OPLElection.cc
+ * @author Peter Linden (linde764@umn.edu)
+ * @author Nikhil Srikanth (srika018@umn.edu)
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares the OPL Party class.
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef OPLPARTY_H_
 #define OPLPARTY_H_

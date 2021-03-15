@@ -1,3 +1,15 @@
+/**
+ * @file OPLCandidate.cc
+ * @author Peter Linden (linde764@umn.edu)
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implementes the OPL Candidate class.
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
+
 #include "OPLCandidate.h"
 #include <iostream>
 #include <sstream>

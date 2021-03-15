@@ -1,4 +1,17 @@
 // Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file OPLElection.cc
+ * @author Nikhil Srikanth (srika018@umn.edu)
+ * @author Peter Linden (linde764@umn.edu)
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @author Andrew Petrescu (petre061@umn.edu)
+ * @brief This file declares the OPL Election class.
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef OPLELECTION_H_
 #define OPLELECTION_H_
