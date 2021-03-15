@@ -1,0 +1,135 @@
+[==========] Running 25 tests from 11 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from fixture_AuditLog
+[ RUN      ] fixture_AuditLog.FileCreation
+[       OK ] fixture_AuditLog.FileCreation (0 ms)
+[----------] 1 test from fixture_AuditLog (0 ms total)
+
+[----------] 2 tests from fixture_Ballot
+[ RUN      ] fixture_Ballot.BallotUniqueID
+[       OK ] fixture_Ballot.BallotUniqueID (0 ms)
+[ RUN      ] fixture_Ballot.BallotUniqueIDRepeat
+[       OK ] fixture_Ballot.BallotUniqueIDRepeat (102 ms)
+[----------] 2 tests from fixture_Ballot (102 ms total)
+
+[----------] 1 test from fixture_ElectionFactory
+[ RUN      ] fixture_ElectionFactory.unimplemented
+/home/alex/UMN/csci5801/repo-Team20/Project1/testing/test_ElectionFactory.cc:7: Failure
+Failed
+Implement this test
+[  FAILED  ] fixture_ElectionFactory.unimplemented (0 ms)
+[----------] 1 test from fixture_ElectionFactory (0 ms total)
+
+[----------] 3 tests from fixture_IRBallot
+[ RUN      ] fixture_IRBallot.IRBallotCSVParse
+[       OK ] fixture_IRBallot.IRBallotCSVParse (0 ms)
+[ RUN      ] fixture_IRBallot.IRBallotIncrement
+[       OK ] fixture_IRBallot.IRBallotIncrement (0 ms)
+[ RUN      ] fixture_IRBallot.IRBallotLog
+[       OK ] fixture_IRBallot.IRBallotLog (0 ms)
+[----------] 3 tests from fixture_IRBallot (0 ms total)
+
+[----------] 1 test from fixture_IRCandidate
+[ RUN      ] fixture_IRCandidate.unimplemented
+/home/alex/UMN/csci5801/repo-Team20/Project1/testing/test_IRCandidate.cc:8: Failure
+Failed
+Implement this test
+[  FAILED  ] fixture_IRCandidate.unimplemented (0 ms)
+[----------] 1 test from fixture_IRCandidate (0 ms total)
+
+[----------] 2 tests from fixture_IRElection
+[ RUN      ] fixture_IRElection.IRElectionSRSExample
+The winner of the election is Rosen of party D with 50% of the votes
+Kleinberg had 0% of the votes.
+Chou had 33% of the votes.
+Royce had 16% of the votes.
+[       OK ] fixture_IRElection.IRElectionSRSExample (1 ms)
+[ RUN      ] fixture_IRElection.IRElectionRandom
+The winner of the election is Candidate2Test of party 2 with 50% of the votes
+Candidate1Test had 43% of the votes.
+Candidate3Test had 44% of the votes.
+Candidate4Test had 40% of the votes.
+Candidate5Test had 43% of the votes.
+Candidate6Test had 42% of the votes.
+Candidate7Test had 45% of the votes.
+Candidate8Test had 44% of the votes.
+Candidate9Test had 44% of the votes.
+Candidate10Test1 had 4% of the votes.
+Candidate11Test1 had 40% of the votes.
+Candidate12Test1 had 39% of the votes.
+Candidate13Test1 had 45% of the votes.
+Candidate14Test1 had 44% of the votes.
+Candidate15Test1 had 39% of the votes.
+Candidate16Test1 had 45% of the votes.
+Candidate17Test1 had 48% of the votes.
+Candidate18Test1 had 46% of the votes.
+Candidate19Test1 had 41% of the votes.
+Candidate20Test2 had 49% of the votes.
+Candidate21Test2 had 45% of the votes.
+Candidate22Test2 had 42% of the votes.
+Candidate23Test2 had 49% of the votes.
+Candidate24Test2 had 40% of the votes.
+Candidate25Test2 had 47% of the votes.
+[       OK ] fixture_IRElection.IRElectionRandom (7068 ms)
+[----------] 2 tests from fixture_IRElection (7069 ms total)
+
+[----------] 1 test from fixture_MediaReport
+[ RUN      ] fixture_MediaReport.MediaReportFileCreation
+[       OK ] fixture_MediaReport.MediaReportFileCreation (0 ms)
+[----------] 1 test from fixture_MediaReport (0 ms total)
+
+[----------] 4 tests from fixture_OPLBallot
+[ RUN      ] fixture_OPLBallot.OPLBallotCSVParse_1choice
+[       OK ] fixture_OPLBallot.OPLBallotCSVParse_1choice (0 ms)
+[ RUN      ] fixture_OPLBallot.OPLBallotCSVParse_0choice
+[       OK ] fixture_OPLBallot.OPLBallotCSVParse_0choice (0 ms)
+[ RUN      ] fixture_OPLBallot.OPLBallotLogOnceChoice
+[       OK ] fixture_OPLBallot.OPLBallotLogOnceChoice (0 ms)
+[ RUN      ] fixture_OPLBallot.OPLBallotLogNoChoice
+[       OK ] fixture_OPLBallot.OPLBallotLogNoChoice (0 ms)
+[----------] 4 tests from fixture_OPLBallot (0 ms total)
+
+[----------] 3 tests from fixture_OPLCandidate
+[ RUN      ] fixture_OPLCandidate.OPLCandidate_empty_log
+[       OK ] fixture_OPLCandidate.OPLCandidate_empty_log (0 ms)
+[ RUN      ] fixture_OPLCandidate.OPLCandidate_empty_gettally
+[       OK ] fixture_OPLCandidate.OPLCandidate_empty_gettally (0 ms)
+[ RUN      ] fixture_OPLCandidate.OPLCandidate_gettally
+[       OK ] fixture_OPLCandidate.OPLCandidate_gettally (0 ms)
+[----------] 3 tests from fixture_OPLCandidate (0 ms total)
+
+[----------] 6 tests from fixture_OPLParty
+[ RUN      ] fixture_OPLParty.OPLParty_getname
+[       OK ] fixture_OPLParty.OPLParty_getname (0 ms)
+[ RUN      ] fixture_OPLParty.OPLParty_gettally
+[       OK ] fixture_OPLParty.OPLParty_gettally (0 ms)
+[ RUN      ] fixture_OPLParty.OPLParty_log
+[       OK ] fixture_OPLParty.OPLParty_log (0 ms)
+[ RUN      ] fixture_OPLParty.OPLParty_1party_1candidate
+[       OK ] fixture_OPLParty.OPLParty_1party_1candidate (0 ms)
+[ RUN      ] fixture_OPLParty.OPLParty_1party_1candidate_3ballots
+[       OK ] fixture_OPLParty.OPLParty_1party_1candidate_3ballots (0 ms)
+[ RUN      ] fixture_OPLParty.OPLParty_gettop_noties
+/home/alex/UMN/csci5801/repo-Team20/Project1/testing/test_OPLParty.cc:88: Failure
+Expected equality of these values:
+  actual
+    Which is: {}
+  expected
+    Which is: { "Meenie", "Moe", "Eenie", "Miney" }
+[  FAILED  ] fixture_OPLParty.OPLParty_gettop_noties (0 ms)
+[----------] 6 tests from fixture_OPLParty (0 ms total)
+
+[----------] 1 test from fixture_TieBreaker
+[ RUN      ] fixture_TieBreaker.TieBreakerInRange
+[       OK ] fixture_TieBreaker.TieBreakerInRange (820 ms)
+[----------] 1 test from fixture_TieBreaker (820 ms total)
+
+[----------] Global test environment tear-down
+[==========] 25 tests from 11 test suites ran. (7991 ms total)
+[  PASSED  ] 22 tests.
+[  FAILED  ] 3 tests, listed below:
+[  FAILED  ] fixture_ElectionFactory.unimplemented
+[  FAILED  ] fixture_IRCandidate.unimplemented
+[  FAILED  ] fixture_OPLParty.OPLParty_gettop_noties
+
+ 3 FAILED TESTS
