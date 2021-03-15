@@ -1,5 +1,14 @@
-
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file TieBreaker.cc
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implements a class for easily breaking ties by flipping a
+ * coin
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #include "TieBreaker.h"
 

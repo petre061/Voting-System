@@ -1,5 +1,14 @@
-
-// Copyright CSCI 5801 Spring 2021 Team 20
+/**
+ * @file IRElection.cc
+ * @author Nikhil Srikanth (srika018@umn.edu)
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares an Independent Runoff election class
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #include "IRElection.h"
 

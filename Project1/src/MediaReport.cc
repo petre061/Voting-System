@@ -1,4 +1,14 @@
-// Copyright 2021, CSCI 5801 Spring 2021 Team 20
+/**
+ * @file MediaReport.cc
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implements a class for easily creating media reports from an
+ * election
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 #include "MediaReport.h"
 
 MediaReport::MediaReport(const std::string& report_name)

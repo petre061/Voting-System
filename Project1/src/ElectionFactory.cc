@@ -1,4 +1,14 @@
-// Copyright 2021 CSCI 5801 Spring 2021 Team 20
+/**
+ * @file ElectionFactory.cc
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file implements an ElectionFactory that produces elections based
+ * on the input file
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 #include "ElectionFactory.h"
 
 #include <cstring>

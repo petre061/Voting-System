@@ -1,4 +1,14 @@
-// Copyright 2021 CSCI 5801 Spring 2021 Team 20
+/**
+ * @file ElectionFactory.h
+ * @author Alex Bohm (bohm0080@umn.edu)
+ * @brief This file declares the ElectionFactory class which produces elections
+ * based on an input file
+ * @version 1.0
+ * @date 2021-03-14
+ *
+ * @copyright Copyright (c) 2021
+ *
+ */
 
 #ifndef PROJECT1_SRC_ELECTIONFACTORY_H_
 #define PROJECT1_SRC_ELECTIONFACTORY_H_
