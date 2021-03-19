@@ -103,7 +103,7 @@ void IRElection::redistribute(uint8_t candidate_index) {
     // Increment the ballot choice
     temp.increment_choice();
     // Move ballot if choices remain
-    if (temp.get_choice() != Ballot::NO_CHOICE) {
+    if (temp.get_choice() != Ballot::NO_CHOICE && !candidates.at(temp.get_choice()).get_eliminated()) {
       // Print to audit log
       audit_log.log("Moving ballot from " + std::to_string(candidate_index) +
                     " to " + std::to_string(temp.get_choice()) + ":");
