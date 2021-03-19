@@ -101,9 +101,12 @@ void IRElection::redistribute(uint8_t candidate_index) {
     IRBallot temp = ballots.front();
     ballots.pop();
     // Increment the ballot choice
-    temp.increment_choice();
+    while(temp.get_choice() != Ballot::NO_CHOICE && candidates.at(temp.get_choice()).get_eliminated()) {
+      temp.increment_choice();
+    }
     // Move ballot if choices remain
-    if (temp.get_choice() != Ballot::NO_CHOICE && !candidates.at(temp.get_choice()).get_eliminated()) {
+    //std::cout << candidates.at(temp.get_choice()).get_eliminated() << std::endl;
+    if (temp.get_choice() != Ballot::NO_CHOICE) {
       // Print to audit log
       audit_log.log("Moving ballot from " + std::to_string(candidate_index) +
                     " to " + std::to_string(temp.get_choice()) + ":");
@@ -116,6 +119,8 @@ void IRElection::redistribute(uint8_t candidate_index) {
       audit_log.log(temp);
     }
   }
+
+  candidates.at(candidate_index).clear_ballots();
 
   audit_log.log("Finished redistributing candidate at index " +
                 std::to_string(candidate_index) + ":");
@@ -164,20 +169,30 @@ int IRElection::run() {
     // Get a list of the tallies to search for min and max
     votes.clear();
     for (int i = 0; i < candidates.size(); i++) {
-      if (!candidates.at(i).get_eliminated()) {
-        votes.push_back(candidates.at(i).get_tally());
-      }
+      votes.push_back(candidates.at(i).get_tally());
     }
 
     // Find min, max votes
-    auto most_votes = std::max_element(std::begin(votes), std::end(votes));
-    auto least_votes = std::min_element(std::begin(votes), std::end(votes));
-    int max_location = std::distance(std::begin(votes), most_votes);
-    int least_location = std::distance(std::begin(votes), least_votes);
-    find_max_values(*most_votes);
+    int most_votes = -1;
+    int least_votes = INT32_MAX;
+    int max_location = -1;
+    int min_location = -1;
+    for(int i = 0; i < candidates.size(); i++) {
+      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() > most_votes) {
+        most_votes = candidates.at(i).get_tally();
+        max_location = i;
+      }
+    }
+    for(int i = 0; i < candidates.size(); i++) {
+      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() < least_votes) {
+        least_votes = candidates.at(i).get_tally();
+        min_location = i;
+      }
+    }
+    find_max_values(most_votes);
 
     // Check for majority
-    if (*most_votes >= majority) {
+    if (most_votes >= majority) {
       audit_log.log("Majority Found");
       found_winner = true;
       if (max_indicies.size() == 1) {
@@ -217,13 +232,13 @@ int IRElection::run() {
       }
 
       // Find the bottom candidates
-      find_min_values(*least_votes);
+      find_min_values(least_votes);
 
       // case where single loser
       if (min_indicies.size() == 1) {
         // Redistribute the single lowest candidate
         audit_log.log("Single lowest candidate:");
-        redistribute(least_location);
+        redistribute(min_location);
       } else {
         audit_log.log("Multiple lowest candidates, breaking tie");
         // Break tie between multiple lowest candidates
