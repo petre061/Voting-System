@@ -36,6 +36,11 @@ const std::queue<IRBallot>& IRCandidate::get_ballots() const {
   // Return the ballots
   return ballots;
 }
+void IRCandidate::clear_ballots() {
+  while(!ballots.empty()) {
+    ballots.pop();
+  }
+}
 void IRCandidate::eliminate() {
   // Set the eliminated flag
   eliminated = true;

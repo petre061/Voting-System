@@ -64,6 +64,12 @@ class IRCandidate : public Loggable {
    */
   const std::queue<IRBallot>& get_ballots() const;
   /**
+   * @brief Clear the ballots from an eliminated candidate
+   *
+   * This method is to be used during redistribution of votes.
+   */
+  void clear_ballots();
+  /**
    * @brief Mark a candidate as eliminated
    */
   void eliminate();

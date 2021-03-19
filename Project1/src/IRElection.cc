@@ -101,8 +101,11 @@ void IRElection::redistribute(uint8_t candidate_index) {
     IRBallot temp = ballots.front();
     ballots.pop();
     // Increment the ballot choice
-    temp.increment_choice();
+    while(temp.get_choice() != Ballot::NO_CHOICE && candidates.at(temp.get_choice()).get_eliminated()) {
+      temp.increment_choice();
+    }
     // Move ballot if choices remain
+    //std::cout << candidates.at(temp.get_choice()).get_eliminated() << std::endl;
     if (temp.get_choice() != Ballot::NO_CHOICE) {
       // Print to audit log
       audit_log.log("Moving ballot from " + std::to_string(candidate_index) +
@@ -117,6 +120,8 @@ void IRElection::redistribute(uint8_t candidate_index) {
     }
   }
 
+  candidates.at(candidate_index).clear_ballots();
+
   audit_log.log("Finished redistributing candidate at index " +
                 std::to_string(candidate_index) + ":");
   audit_log.log(candidates[candidate_index]);
@@ -128,17 +133,18 @@ void IRElection::announce_results() {
   output << "The winner of the election is "
          << candidates.at(winnerIndex).get_name() << " of party "
          << candidates.at(winnerIndex).get_party() << " with "
-         << candidates.at(winnerIndex).get_tally() * 100 / total_ballots
+         << (float) candidates.at(winnerIndex).get_tally() * 100 / total_ballots
          << "% of the votes" << std::endl;
   for (int i = 0; i < candidates.size(); i++) {
     if (i == winnerIndex) {
       // do nothing
-    } else {
-      output << candidates.at(i).get_name() << " had "
-             << candidates.at(i).get_tally() * 100 / total_ballots
+    } else if (!candidates.at(i).get_eliminated()){
+      output << candidates.at(i).get_name() << " had a peak of "
+             << (float) candidates.at(i).get_tally() * 100 / total_ballots
              << "% of the votes." << std::endl;
     }
   }
+  output << "Any remaining candidates were eliminated." << std::endl;
   // Print results to screen
   std::cout << output.str();
   // Write results to media report
@@ -153,7 +159,7 @@ int IRElection::run() {
   // driver function for IR Elections
   std::vector<int> votes(candidates.size());
   bool found_winner = false;
-  int majority = (total_ballots + 1) / 2;
+  int majority = total_ballots / 2 + 1;
 
   // parse ballots
   parse_ballots();
@@ -163,20 +169,30 @@ int IRElection::run() {
     // Get a list of the tallies to search for min and max
     votes.clear();
     for (int i = 0; i < candidates.size(); i++) {
-      if (!candidates.at(i).get_eliminated()) {
-        votes.push_back(candidates.at(i).get_tally());
-      }
+      votes.push_back(candidates.at(i).get_tally());
     }
 
     // Find min, max votes
-    auto most_votes = std::max_element(std::begin(votes), std::end(votes));
-    auto least_votes = std::min_element(std::begin(votes), std::end(votes));
-    int max_location = std::distance(std::begin(votes), most_votes);
-    int least_location = std::distance(std::begin(votes), least_votes);
-    find_max_values(*most_votes);
+    int most_votes = -1;
+    int least_votes = INT32_MAX;
+    int max_location = -1;
+    int min_location = -1;
+    for(int i = 0; i < candidates.size(); i++) {
+      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() > most_votes) {
+        most_votes = candidates.at(i).get_tally();
+        max_location = i;
+      }
+    }
+    for(int i = 0; i < candidates.size(); i++) {
+      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() < least_votes) {
+        least_votes = candidates.at(i).get_tally();
+        min_location = i;
+      }
+    }
+    find_max_values(most_votes);
 
     // Check for majority
-    if (*most_votes >= majority) {
+    if (most_votes >= majority) {
       audit_log.log("Majority Found");
       found_winner = true;
       if (max_indicies.size() == 1) {
@@ -199,14 +215,30 @@ int IRElection::run() {
       }
     } else {
       audit_log.log("No majority found. Redistributing votes");
+      // if no majority and one candidate remains then they are winner
+      int notEliminated = 0;
+      int index = 0;
+      for(int i = 0; i < candidates.size(); i++) {
+        if(!candidates.at(i).get_eliminated()) {
+          notEliminated++;
+          index = i;
+        }
+      }
+
+      if(notEliminated == 1) {
+        found_winner = true;
+        winnerIndex = index;
+        break;
+      }
+
       // Find the bottom candidates
-      find_min_values(*least_votes);
+      find_min_values(least_votes);
 
       // case where single loser
       if (min_indicies.size() == 1) {
         // Redistribute the single lowest candidate
         audit_log.log("Single lowest candidate:");
-        redistribute(least_location);
+        redistribute(min_location);
       } else {
         audit_log.log("Multiple lowest candidates, breaking tie");
         // Break tie between multiple lowest candidates
