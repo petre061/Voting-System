@@ -128,17 +128,18 @@ void IRElection::announce_results() {
   output << "The winner of the election is "
          << candidates.at(winnerIndex).get_name() << " of party "
          << candidates.at(winnerIndex).get_party() << " with "
-         << candidates.at(winnerIndex).get_tally() * 100 / total_ballots
+         << (float) candidates.at(winnerIndex).get_tally() * 100 / total_ballots
          << "% of the votes" << std::endl;
   for (int i = 0; i < candidates.size(); i++) {
     if (i == winnerIndex) {
       // do nothing
-    } else {
-      output << candidates.at(i).get_name() << " had "
-             << candidates.at(i).get_tally() * 100 / total_ballots
+    } else if (!candidates.at(i).get_eliminated()){
+      output << candidates.at(i).get_name() << " had a peak of "
+             << (float) candidates.at(i).get_tally() * 100 / total_ballots
              << "% of the votes." << std::endl;
     }
   }
+  output << "Any remaining candidates were eliminated." << std::endl;
   // Print results to screen
   std::cout << output.str();
   // Write results to media report
@@ -153,7 +154,7 @@ int IRElection::run() {
   // driver function for IR Elections
   std::vector<int> votes(candidates.size());
   bool found_winner = false;
-  int majority = (total_ballots + 1) / 2;
+  int majority = total_ballots / 2 + 1;
 
   // parse ballots
   parse_ballots();
@@ -199,6 +200,22 @@ int IRElection::run() {
       }
     } else {
       audit_log.log("No majority found. Redistributing votes");
+      // if no majority and one candidate remains then they are winner
+      int notEliminated = 0;
+      int index = 0;
+      for(int i = 0; i < candidates.size(); i++) {
+        if(!candidates.at(i).get_eliminated()) {
+          notEliminated++;
+          index = i;
+        }
+      }
+
+      if(notEliminated == 1) {
+        found_winner = true;
+        winnerIndex = index;
+        break;
+      }
+
       // Find the bottom candidates
       find_min_values(*least_votes);
 
