@@ -8,19 +8,13 @@
 
 class fixture_IRBallot : public ::testing::Test {
  protected:
-  IRBallot* ballot = nullptr;
-
  public:
   void SetUp() {
-    // Remove any previous instances
-    delete ballot;
-    ballot = nullptr;
+    // Set up any necessary data
   }
 
   void TearDown() {
-    // Delete ballot if we haven't cleaned it up
-    delete ballot;
-    ballot = nullptr;
+    // Clean up any data
   }
 };
 #endif  // PROJECT1_TESTING_TEST_IRBALLOT_H_
