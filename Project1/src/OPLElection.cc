@@ -149,10 +149,11 @@ void OPLElection::assign_seats() {
     int index = std::distance(std::begin(remainders), most_rem);
     find_max_values(remainders, *most_rem);
     if(max_indicies.size() == 1) {
-      audit_log.log("Single party has largest remiander");
+      audit_log.log("Single party has largest remainder");
       party_seats[parties.at(index).get_name()]++;
       total_seats--;
       remainders.at(index) = 0;
+      audit_log.log(parties.at(index).get_name() + " wins the seat, now has " + std::to_string(party_seats[parties.at(index).get_name()]) + " seat(s)");
     }
     else {
       // Tie break 
@@ -199,54 +200,55 @@ void OPLElection::announce_results() {
 }
 
 int OPLElection::run() {
-
+  std::cout << "START RUN";
   // parse ballots
   parse_ballots();
   // assign seats to parties
   assign_seats();
+  std::cout << "ANNOUNCE RESULT";
   // display results
   announce_results();
   std::cout << "done with announcing";
   return 0;
 }
-
+// PLACEHOLDER FOR LOG UNTIL USAGE IS DECIDED TONIGHT
 std::string OPLElection::log() const {
-  //std::cout << " made it to log";
-  // TODO: log OPL election movements/information
-    std::stringstream output;
+   std::cout << "";
+  // // TODO: log OPL election movements/information
+  //   std::stringstream output;
 
-    output << "OPLElection: total_ballots=" << std::to_string(total_ballots);
+  //   output << "OPLElection: total_ballots=" << std::to_string(total_ballots);
 
-    // Print the candidate names
-     output << " candidates=[";
+  //   // Print the candidate names
+  //    output << " candidates=[";
 
-  auto candidate = *candidates.begin();
-  if (!candidates.empty()) {
-    output << candidate->get_name();
-    ++candidate;
-  }
-  for (; candidate != *candidates.end(); ++candidate) {
-    output << ", " << candidate->get_name();
-    ++candidate;
-  }
-  output << "]";
+  // auto candidate = *candidates.begin();
+  // if (!candidates.empty()) {
+  //   output << candidate->get_name();
+  //   ++candidate;
+  // }
+  // for (; candidate != *candidates.end(); ++candidate) {
+  //   output << ", " << candidate->get_name();
+  //   //++candidate;
+  // }
+  // output << "]";
 
 
-    // Print number of party seats
-    output << " party_seats=[";
+  //   // Print number of party seats
+  //   output << " party_seats=[";
 
-    auto pseats = party_seats.begin();
-    if (!party_seats.empty()) {
-        output << num_seats;
-        ++pseats;
-    }
-    for (; pseats != party_seats.end(); ++pseats) {
-        output << num_seats;
-        ++pseats;
-    }
-    output << "]";
+  //   auto pseats = party_seats.begin();
+  //   if (!party_seats.empty()) {
+  //       output << num_seats;
+  //       ++pseats;
+  //   }
+  //   for (; pseats != party_seats.end(); ++pseats) {
+  //       output << num_seats;
+  //       //++pseats;
+  //   }
+  //   output << "]";
 
-    return output.str();
+  //   return output.str();
 }
 
 void OPLElection::find_max_values(std::vector<int> tallies, int max) {
