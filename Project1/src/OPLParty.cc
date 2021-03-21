@@ -64,7 +64,7 @@ std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
 
   // // get top n candidates
   // std::priority_queue<OPLCandidate*, std::vector<OPLCandidate*>, decltype(comp)> candidate_max_heap(comp);
-  std::vector<std::string> result;
+  //std::vector<std::string> result;
   // OPLCandidate* top1;
   // OPLCandidate* top2;
 
@@ -104,33 +104,46 @@ std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
   // }
 
   // std::cout << result.size() << std::endl;
-  return result; 
-  // std::vector<OPLCandidate*> candidate_list = get_candidates();
-  // std::vector<std::string> result;
-  // int seats = n;
-  // if(seats > candidate_list.size()) {
-  //   throw std::invalid_argument("Request of candidates is larger than number of candidates associated with party");
+  //return result; 
+  std::vector<OPLCandidate*> candidate_list = get_candidates();
+  std::vector<std::string> result;
+  int seats = n;
+  if(seats > candidate_list.size()) {
+    throw std::invalid_argument("Request of candidates is larger than number of candidates associated with party");
+  }
+  while(candidate_list.size() > 0) {
+    if(seats > 0) {
+      int tally = 0;
+      int index = 255;
+      for(int i = 0; i < candidate_list.size(); i++) {
+        if(candidate_list.at(i)->get_tally() >= tally) {
+          tally = candidate_list.at(i)->get_tally();
+          index = i;
+        }
+      }
+      //std::cout << "next most popular candidate is " << candidate_list.at(index)->get_name() << " with " << candidate_list.at(index)->get_tally();
+      //if(index != 255) {
+      result.push_back(candidate_list.at(index)->get_name());
+      std::vector<OPLCandidate*>::iterator i = candidate_list.begin() + index;
+      candidate_list.erase(i);
+      seats --;
+      //}
+      // else {
+      //   seats = 0;
+      // }
+    }
+    else {
+      break;
+    }
+  }
+  // std::stringstream output;
+  // for(int i = 0; i < result.size(); i++) {
+  //   output << result.at(i);
   // }
-  // while(seats > 0) {
-  //   int tally = 0;
-  //   int index = 255;
-  //   for(int i = 0; i < candidate_list.size(); i++) {
-  //     if(candidate_list.at(i)->get_tally() > tally) {
-  //       tally = candidate_list.at(i)->get_tally();
-  //       index = i;
-  //     }
-  //   }
-  //   if(index != 255) {
-  //     result.push_back(candidate_list.at(index)->get_name());
-  //     std::vector<OPLCandidate*>::iterator i = candidate_list.begin() + index;
-  //     candidate_list.erase(i);
-  //     seats --;
-  //   }
-  //   else {
-  //     seats = 0;
-  //   }
-  // }
-  // return result;
+  // //std::cout << "result is " << output.str();
+  // return output.str();
+
+  return result;
 }
 
 std::vector<OPLCandidate*> OPLParty::get_candidates() {
