@@ -181,17 +181,20 @@ void OPLElection::announce_results() {
     int percent_of_seats = party_seats[parties.at(i).get_name()] * 100 / num_seats;
     output << "Party " << parties.at(i).get_name() << " won " << party_seats[parties.at(i).get_name()] << " seats." << std::endl;
     output << "They won " << percent_of_total << "% of the total votes and " << percent_of_seats << "% of the seats" << std::endl;
-    output << "The candidates that won those seats are: ";
-    for(int j = 0; j < temp_candidates.size(); j++) {
-      output << temp_candidates.at(i) << " ";
+    if(temp_candidates.size() > 0) {
+      output << "The candidates that won those seats are: ";
+      for(int j = 0; j < temp_candidates.size(); j++) {
+        output << temp_candidates.at(j) << " ";
+      }
     }
     output << std::endl << std::endl;
 
     audit_log.log(output.str());
     std::cout << output.str();
     media_report.write(output.str());
+    
   }
-
+  
   audit_log.log("END ELECTION RESULTS");
 }
 
@@ -203,11 +206,12 @@ int OPLElection::run() {
   assign_seats();
   // display results
   announce_results();
-
+  std::cout << "done with announcing";
   return 0;
 }
 
 std::string OPLElection::log() const {
+  //std::cout << " made it to log";
   // TODO: log OPL election movements/information
     std::stringstream output;
 

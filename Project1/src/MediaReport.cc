@@ -10,7 +10,7 @@
  *
  */
 #include "MediaReport.h"
-
+#include <iostream>
 MediaReport::MediaReport(const std::string& report_name)
     : filename(report_name), file(filename) {
   // File is already (probably) open from initializer list
@@ -27,6 +27,7 @@ MediaReport::MediaReport(const std::string& report_name)
   file << "Report Generated: " << get_time_date() << std::endl;
 }
 void MediaReport::write(const std::string& text) {
+  std::cout << text;
   // Write text to file
   file << text << std::endl;
 }
