@@ -39,7 +39,10 @@ Election::Election(const std::string& election_type, const std::string& ballots)
                                 ballot_filename + "\'");
   }
 }
-
+const std::string& Election::get_type() const {
+  // Return the election type
+  return type;
+}
 Election::~Election() {
   // Force closure of ballot_file on destruction
   if (ballot_file.is_open()) {
