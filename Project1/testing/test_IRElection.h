@@ -8,19 +8,13 @@
 
 class fixture_IRElection : public ::testing::Test {
  protected:
-  IRElection* election = nullptr;
-
  public:
   void SetUp() {
-    // Delete any previous test data
-    delete election;
-    election = nullptr;
+    // Set up any data necessary for the tests
   }
 
   void TearDown() {
-    // Free up election
-    delete election;
-    election = nullptr;
+    // Free test data
   }
 };
 #endif  // PROJECT1_TESTING_TEST_IRELECTION_H_
