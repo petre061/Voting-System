@@ -21,8 +21,13 @@ IRCandidate::IRCandidate(const std::string& candidate_name,
 }
 
 void IRCandidate::add_ballot(IRBallot new_ballot) {
-  // Push the new ballot onto the queue
-  ballots.push(new_ballot);
+  if (!eliminated) {
+    // Push the new ballot onto the queue
+    ballots.push(new_ballot);
+  } else {
+    throw std::invalid_argument("Cannot add ballot to eliminated candidate " +
+                                name);
+  }
 }
 
 uint64_t IRCandidate::get_tally() const {
@@ -37,7 +42,7 @@ const std::queue<IRBallot>& IRCandidate::get_ballots() const {
   return ballots;
 }
 void IRCandidate::clear_ballots() {
-  while(!ballots.empty()) {
+  while (!ballots.empty()) {
     ballots.pop();
   }
 }
@@ -64,7 +69,7 @@ std::string IRCandidate::log() const {
   // Write the various fields of IRCandidate to the stream
   output << "IRCandidate: name=\'" << name << "\'";
   output << " party=\'" << party << "\'";
-  output << " get_tally()=" << std::to_string(ballots.size());
+  output << " get_tally()=" << std::to_string(get_tally());
   // Write the eliminated field using the alpha-representation of the boolean
   output << " eliminated=" << std::boolalpha << eliminated;
 

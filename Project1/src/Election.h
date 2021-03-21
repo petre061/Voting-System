@@ -68,6 +68,12 @@ class Election : public Loggable {
   explicit Election(const std::string& election_type,
                     const std::string& ballots);
   /**
+   * @brief Get the type of election
+   *
+   * @return const std::string& Type of election
+   */
+  const std::string& get_type() const;
+  /**
    * @brief Desctructor for Elections
    */
   virtual ~Election();

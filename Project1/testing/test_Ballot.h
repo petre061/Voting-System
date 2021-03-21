@@ -19,18 +19,15 @@ class TestBallot : public Ballot {
 
 class fixture_Ballot : public ::testing::Test {
  protected:
-  TestBallot* ballot = nullptr;
+  // TestBallot* ballot = nullptr;
 
  public:
   void SetUp() {
-    // Remove any previous instances
-    delete ballot;
-    ballot = nullptr;
+    // Set up any test data
   }
 
   void TearDown() {
-    // Delete ballot if we haven't cleaned it up
-    delete ballot;
+    // Clean up any test data
   }
 };
 #endif  // PROJECT1_TESTING_TEST_BALLOT_H_

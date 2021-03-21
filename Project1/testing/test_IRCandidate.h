@@ -8,19 +8,14 @@
 
 class fixture_IRCandidate : public ::testing::Test {
  protected:
-  IRCandidate* candidate = nullptr;
-
+  // IRCandidate* candidate = nullptr;
  public:
   void SetUp() {
-    // Remove any previous instances
-    delete candidate;
-    candidate = nullptr;
+    // Set up any necessary data
   }
 
   void TearDown() {
-    // Delete candidate if we haven't cleaned it up
-    delete candidate;
-    candidate = nullptr;
+    // Remove any data structures used
   }
 };
 #endif  // PROJECT1_TESTING_TEST_IRCANDIDATE_H_

@@ -9,19 +9,15 @@
 
 class fixture_ElectionFactory : public ::testing::Test {
  protected:
-  Election* election = nullptr;
+  // Election* election = nullptr;
 
  public:
   void SetUp() {
-    // Clean up any previous instances
-    delete election;
-    election = nullptr;
+    // Set up any data
   }
 
   void TearDown() {
-    // Free up election
-    delete election;
-    election = nullptr;
+    // Free up any data
   }
 };
 #endif  // PROJECT1_TESTING_TEST_ELECTIONFACTORY_H_
