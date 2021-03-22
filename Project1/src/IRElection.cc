@@ -24,6 +24,10 @@
 IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   audit_log.log("Starting Independent Runoff Election");
 
+  // Log the file we are reading ballots from
+  audit_log.log("Reading election information from: \'" + ballot_filename +
+                "\'");
+
   audit_log.log("Parsing File Header");
   std::string line, name;
   for (int i = 0; i < 4; i++) {
@@ -101,11 +105,13 @@ void IRElection::redistribute(uint8_t candidate_index) {
     IRBallot temp = ballots.front();
     ballots.pop();
     // Increment the ballot choice
-    while(temp.get_choice() != Ballot::NO_CHOICE && candidates.at(temp.get_choice()).get_eliminated()) {
+    while (temp.get_choice() != Ballot::NO_CHOICE &&
+           candidates.at(temp.get_choice()).get_eliminated()) {
       temp.increment_choice();
     }
     // Move ballot if choices remain
-    //std::cout << candidates.at(temp.get_choice()).get_eliminated() << std::endl;
+    // std::cout << candidates.at(temp.get_choice()).get_eliminated() <<
+    // std::endl;
     if (temp.get_choice() != Ballot::NO_CHOICE) {
       // Print to audit log
       audit_log.log("Moving ballot from " + std::to_string(candidate_index) +
@@ -133,14 +139,14 @@ void IRElection::announce_results() {
   output << "The winner of the election is "
          << candidates.at(winnerIndex).get_name() << " of party "
          << candidates.at(winnerIndex).get_party() << " with "
-         << (float) candidates.at(winnerIndex).get_tally() * 100 / total_ballots
+         << (float)candidates.at(winnerIndex).get_tally() * 100 / total_ballots
          << "% of the votes" << std::endl;
   for (int i = 0; i < candidates.size(); i++) {
     if (i == winnerIndex) {
       // do nothing
-    } else if (!candidates.at(i).get_eliminated()){
+    } else if (!candidates.at(i).get_eliminated()) {
       output << candidates.at(i).get_name() << " had a peak of "
-             << (float) candidates.at(i).get_tally() * 100 / total_ballots
+             << (float)candidates.at(i).get_tally() * 100 / total_ballots
              << "% of the votes." << std::endl;
     }
   }
@@ -177,14 +183,16 @@ int IRElection::run() {
     int least_votes = INT32_MAX;
     int max_location = -1;
     int min_location = -1;
-    for(int i = 0; i < candidates.size(); i++) {
-      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() > most_votes) {
+    for (int i = 0; i < candidates.size(); i++) {
+      if (!candidates.at(i).get_eliminated() &&
+          candidates.at(i).get_tally() > most_votes) {
         most_votes = candidates.at(i).get_tally();
         max_location = i;
       }
     }
-    for(int i = 0; i < candidates.size(); i++) {
-      if(!candidates.at(i).get_eliminated() && candidates.at(i).get_tally() < least_votes) {
+    for (int i = 0; i < candidates.size(); i++) {
+      if (!candidates.at(i).get_eliminated() &&
+          candidates.at(i).get_tally() < least_votes) {
         least_votes = candidates.at(i).get_tally();
         min_location = i;
       }
@@ -218,14 +226,14 @@ int IRElection::run() {
       // if no majority and one candidate remains then they are winner
       int notEliminated = 0;
       int index = 0;
-      for(int i = 0; i < candidates.size(); i++) {
-        if(!candidates.at(i).get_eliminated()) {
+      for (int i = 0; i < candidates.size(); i++) {
+        if (!candidates.at(i).get_eliminated()) {
           notEliminated++;
           index = i;
         }
       }
 
-      if(notEliminated == 1) {
+      if (notEliminated == 1) {
         found_winner = true;
         winnerIndex = index;
         break;
