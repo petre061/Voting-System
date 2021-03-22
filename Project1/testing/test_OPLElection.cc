@@ -7,7 +7,6 @@
 
 TEST_F(fixture_OPLElection, OPLElectionFunctionality) {
   // Test basic functionality
-  election = new OPLElection("./ballot_files/opl_example.csv");
-  election->run();
-  ASSERT_EQ(election->log(),"");
+  election = new OPLElection("./ballot_files/opl_random.csv");
+  ASSERT_EQ(election->run(),0);
 }

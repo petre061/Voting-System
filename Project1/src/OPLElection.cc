@@ -189,11 +189,9 @@ void OPLElection::announce_results() {
       }
     }
     output << std::endl << std::endl;
-
     audit_log.log(output.str());
     std::cout << output.str();
     media_report.write(output.str());
-    
   }
   
   audit_log.log("END ELECTION RESULTS");
@@ -208,12 +206,11 @@ int OPLElection::run() {
   std::cout << "ANNOUNCE RESULT";
   // display results
   announce_results();
-  std::cout << "done with announcing";
   return 0;
 }
 // PLACEHOLDER FOR LOG UNTIL USAGE IS DECIDED TONIGHT
 std::string OPLElection::log() const {
-   std::cout << "";
+   return "";
   // // TODO: log OPL election movements/information
   //   std::stringstream output;
 
