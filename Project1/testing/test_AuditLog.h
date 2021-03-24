@@ -8,19 +8,13 @@
 
 class fixture_AuditLog : public ::testing::Test {
  protected:
-  AuditLog* log = nullptr;
-
  public:
   void SetUp() {
-    // Remove any previous instances
-    delete log;
-    log = nullptr;
+    // Set up any data for the test
   }
 
   void TearDown() {
-    // Delete log if we haven't cleaned it up
-    delete log;
-    log = nullptr;
+    // Clean up any data from the test
   }
 };
 #endif  // PROJECT1_TESTING_TEST_AUDITLOG_H_

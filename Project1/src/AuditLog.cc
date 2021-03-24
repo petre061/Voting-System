@@ -1,7 +1,7 @@
 /**
  * @file AuditLog.cc
  * @author Alex Bohm (bohm0080@umn.edu)
- * @brief This file implementes the AuditLog class.
+ * @brief This file implements the AuditLog class.
  * @version 1.0
  * @date 2021-03-14
  *
