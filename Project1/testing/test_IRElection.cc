@@ -21,3 +21,50 @@ TEST_F(fixture_IRElection, IRElectionRandom) {
 
   // TODO(someone): more testing here
 }
+
+TEST_F(fixture_IRElection, IRElectionMPV) {
+  // Test using the example file from the SRS document
+  IRElection election("ballot_files/ir_majoritypopularVote.csv");
+
+  ASSERT_EQ(election.run(), 0);
+
+  // TODO(someone): more testing here
+}
+
+TEST_F(fixture_IRElection, IRElectionNM) {
+  // Test using the example file from the SRS document
+  IRElection election("ballot_files/ir_noMajority.csv");
+
+  ASSERT_EQ(election.run(), 0);
+
+  // TODO(someone): more testing here
+}
+
+TEST_F(fixture_IRElection, IRElectionOC) {
+  // Test using the example file from the SRS document
+  IRElection election("ballot_files/ir_oneCandidate.csv");
+
+  ASSERT_EQ(election.run(), 0);
+
+  // TODO(someone): more testing here
+}
+
+TEST_F(fixture_IRElection, IRElectionSV) {
+  // Test using the example file from the SRS document
+  IRElection election("ballot_files/ir_singleVote.csv");
+
+  ASSERT_EQ(election.run(), 0);
+
+  // TODO(someone): more testing here
+}
+
+TEST_F(fixture_IRElection, IRElectionTWT) {
+  // Test using the example file from the SRS document
+  IRElection election("ballot_files/ir_twoWayTie.csv");
+
+  ASSERT_EQ(election.run(), 0);
+
+  // TODO(someone): more testing here
+}
+
+
