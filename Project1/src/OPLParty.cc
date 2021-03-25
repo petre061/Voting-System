@@ -56,15 +56,20 @@ std::string OPLParty::get_name(){
   return pname;
 }
 
+// Return an ordered list of the highest tally-getting candidates within a given party, the length of the list being equivalent to the number of seats awarded to said party
 std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
+  // duplicate the list of OPLCandidates attributed to party
   std::vector<OPLCandidate*> candidate_list = get_candidates();
   std::vector<std::string> result;
   int seats = n;
   if(seats > candidate_list.size()) {
     throw std::invalid_argument("Request of candidates is larger than number of candidates associated with party");
   }
+  // As long as there is at least one candidate attributed to the party - will iterate until none are in duplicate list
   while(candidate_list.size() > 0) {
+    // So long as there are > 0 seats to allocate still:
     if(seats > 0) {
+      // For each seat left to allocate, find max tally and index of candidate with said tally
       int tally = 0;
       int index = 255;
       for(int i = 0; i < candidate_list.size(); i++) {
@@ -72,14 +77,15 @@ std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
           tally = candidate_list.at(i)->get_tally();
           index = i;
         }
+        // Tie-break between the two with the same tally
         if(candidate_list.at(i)->get_tally() == tally) {
-          //TieBreaker t = new T
           if(TieBreaker::resolve_tie(2) == 1) {
             tally = candidate_list.at(i)->get_tally();
             index = i;
           }
         }        
       }
+      // add next highest candidate to result vector, and erase said candidate from the list being iterated through
       result.push_back(candidate_list.at(index)->get_name());
       std::vector<OPLCandidate*>::iterator i = candidate_list.begin() + index;
       candidate_list.erase(i);
