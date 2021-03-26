@@ -24,7 +24,7 @@ TEST_F(fixture_IRElection, IRElectionRandom) {
 
 TEST_F(fixture_IRElection, IRElectionMPV) {
   // Test using the example file from the SRS document
-  IRElection election("ballot_files/ir_majoritypopularVote.csv");
+  IRElection election("ballot_files/ir_majorityPopularVote.csv");
 
   ASSERT_EQ(election.run(), 0);
 
@@ -60,11 +60,9 @@ TEST_F(fixture_IRElection, IRElectionSV) {
 
 TEST_F(fixture_IRElection, IRElectionTWT) {
   // Test using the example file from the SRS document
-  IRElection election("ballot_files/ir_twoWayTie.csv");
+  IRElection election("ballot_files/IR_twoWayTie.csv");
 
   ASSERT_EQ(election.run(), 0);
 
   // TODO(someone): more testing here
 }
-
-
