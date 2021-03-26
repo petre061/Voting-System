@@ -2,14 +2,22 @@
 ## Building Instructions ##
 
 ### Background ###
-This project uses CMake as the primary build system. As the requirements 
-state that a Makefile must be provided, a wrapper Makefile sets up and
-runs the necessary `cmake` command chain.
+This project uses CMake as the primary build system. As the requirements state that a Makefile must be provided, a wrapper Makefile sets up and runs the necessary `cmake` command chain.
 
 ### Directions ###
 
 #### Release Build ####
-From the `Project1` directory, simply run `make`. This will build the `voting-system` executable and place it into the `build` directory.
+Following these instructions will build the main executable, the testing executable, and the documentation.
+
+From the `Project1` directory, simply run `make`. This will build the `voting_system` executable and place it into the `build` directory.
+
+Alternatively, one can directly use CMake:
+* `cd Project1`
+* `mkdir -p build`
+* `cmake -S . -B build -DCMAKE_BUILD_TYPE=Release`
+* `cmake --build build --parallel $(nproc)`
+
+The executable will be placed at `Project1/build/voting_system`. The testing executable will be placed at `build/testing/voting_system_test` and the documentation will be placed into the `Project1/documentation/html` directory.
 
 #### Development Build ####
 It is highly recommended that one takes a look at the `Makefile` commands under the **debug** target. This sequence of commands sets up an out of source build and makes cleaning the project very easy if something breaks (just remove the build directory).
@@ -40,8 +48,7 @@ The second way of testing will print the results of individual tests to the scre
 ## Documentation ##
 The documentation for this project is generated using this document, cmake, and Doxygen. 
 
-In order to build the documentation, first follow the Development Build instructions. After setting
-up an out of source build with the instructions and building the main executable follow these commands:
+In order to build the documentation, first follow the build instructions. After setting up an out of source build with the instructions and building the main executable follow these commands:
 * `cd build`
 * `make documentation`
 * `cd Project1/documentation/html`

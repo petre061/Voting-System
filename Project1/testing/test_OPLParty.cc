@@ -1,15 +1,16 @@
 // Copyright 2021, CSCI 5801 Spring 2021 Team 20
 #include "test_OPLParty.h"
 
+#include <iostream>
+#include <string>
+
 #include "OPLCandidate.h"
 #include "OPLParty.h"
-#include <string>
-#include <iostream>
 
 TEST_F(fixture_OPLParty, OPLParty_getname) {
   // Test basic functionality, empty candidate
   OPLParty* party = new OPLParty("Democrat");
-  ASSERT_EQ(party->get_name(),"Democrat");
+  ASSERT_EQ(party->get_name(), "Democrat");
   delete party;
 }
 TEST_F(fixture_OPLParty, OPLParty_gettally) {
@@ -22,7 +23,6 @@ TEST_F(fixture_OPLParty, OPLParty_log) {
   ASSERT_EQ(party->log(), "OPL Party Democrat: []");
   delete party;
 }
-std::string expected = ""
 TEST_F(fixture_OPLParty, OPLParty_1party_1candidate) {
   OPLParty* party = new OPLParty("Spaghetti");
   OPLCandidate* candidate = new OPLCandidate("Ronald");
@@ -58,8 +58,8 @@ TEST_F(fixture_OPLParty, OPLParty_gettop_noties) {
   OPLCandidate* candidate1 = new OPLCandidate("Eenie");
   OPLCandidate* candidate2 = new OPLCandidate("Meenie");
   OPLCandidate* candidate3 = new OPLCandidate("Miney");
-  OPLCandidate* candidate4 = new OPLCandidate("Moe");    
-  
+  OPLCandidate* candidate4 = new OPLCandidate("Moe");
+
   party->add_candidate(candidate1);
   party->add_candidate(candidate2);
   party->add_candidate(candidate3);
@@ -84,16 +84,16 @@ TEST_F(fixture_OPLParty, OPLParty_gettop_noties) {
   OPLBallot* ballot6 = new OPLBallot(",,,1");
   candidate4->add_ballot(*ballot5);
   candidate4->add_ballot(*ballot6);
-  
+
   std::vector<std::string> actual = party->get_top_n_candidate_names(4);
-  std::vector<std::string> expected = {"Meenie","Moe","Eenie","Miney"};
+  std::vector<std::string> expected = {"Meenie", "Moe", "Eenie", "Miney"};
   ASSERT_EQ(actual, expected);
   delete ballot1;
   delete ballot2;
   delete ballot3;
   delete ballot4;
   delete ballot5;
-  delete ballot6; 
+  delete ballot6;
   delete candidate1;
   delete candidate2;
   delete candidate3;
@@ -105,8 +105,8 @@ TEST_F(fixture_OPLParty, OPLParty_tiebreaker) {
   // One candidate in party, 1 vote
   OPLParty* party = new OPLParty("Spaghetti");
   OPLCandidate* candidate1 = new OPLCandidate("Eenie");
-  OPLCandidate* candidate2 = new OPLCandidate("Meenie"); 
-  
+  OPLCandidate* candidate2 = new OPLCandidate("Meenie");
+
   party->add_candidate(candidate1);
   party->add_candidate(candidate2);
 
@@ -117,15 +117,15 @@ TEST_F(fixture_OPLParty, OPLParty_tiebreaker) {
   // 1 votes for Meenie
   OPLBallot* ballot2 = new OPLBallot(",1,,");
   candidate2->add_ballot(*ballot2);
-  
+
   float avg = 0;
-  for(int i = 0; i < 10000000; i++) {
+  for (int i = 0; i < 10000000; i++) {
     std::vector<std::string> result = party->get_top_n_candidate_names(1);
-    if(((result.at(0)).compare("Eenie")) == 0) {
+    if (((result.at(0)).compare("Eenie")) == 0) {
       avg += 1;
     }
   }
-  avg = round(10*(avg/10000000));
+  avg = round(10 * (avg / 10000000));
   ASSERT_EQ(avg, 5);
   delete ballot1;
   delete ballot2;
@@ -134,4 +134,4 @@ TEST_F(fixture_OPLParty, OPLParty_tiebreaker) {
   delete party;
 }
 
-// n > 
+// n >
