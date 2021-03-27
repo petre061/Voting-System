@@ -45,31 +45,38 @@ OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
       // parse information and create/assign objects
       std::istringstream ss(line);
       while (getline(ss, name, ',')){
-        OPLCandidate* temp = new OPLCandidate(name);
-        candidates.push_back(temp);
-        getline(ss, party, ',');
+        if(!name.empty()) {
+        // if(name.compare("eol") != 0) {
+          OPLCandidate* temp = new OPLCandidate(name);
+          candidates.push_back(temp);
+          getline(ss, party, ',');
+          //std::cout << party << "\n";
+          // adding first party and candidate
+          if (parties.size() == 0) {
+            parties.push_back(OPLParty(party));
+            parties.back().add_candidate(temp);
+            p_idx[party] = p_idx_count++;
+            // if the party exists add candidate there
+          } else if (p_idx.find(party) != p_idx.end()){
+            //std::cout << party << "\n";
+            parties.at(p_idx.find(party)->second).add_candidate(temp);
 
-        // adding first party and candidate
-        if (parties.size() == 0) {
-          parties.push_back(OPLParty(party));
-          parties.back().add_candidate(temp);
-          p_idx[party] = p_idx_count++;
-
-          // if the party exists add candidate there
-        } else if (p_idx.find(party) != p_idx.end()){
-          parties.at(p_idx.find(party)->second).add_candidate(temp);
-
-          // party does not exist yet so add
-        } else {
-          parties.push_back(OPLParty(party));
-          parties.back().add_candidate(temp);
-          p_idx[party] = p_idx_count++;
-        }
+            // party does not exist yet so add
+          } else if (p_idx.find(party) == p_idx.end()) {
+              parties.push_back(OPLParty(party));
+              parties.back().add_candidate(temp);
+              p_idx[party] = p_idx_count++;
+          }
+          std::cout << parties.back().get_name() << parties.back().get_candidates().size() << p_idx_count << "\n";
+        //}
       }
+    }
     } else if (i == 3) {
       num_seats = std::stoi(line);
+      //std::cout << num_seats << "\n";
     } else if (i == 4) {
       total_ballots = std::stoi(line);
+      //std::cout << total_ballots << "\n";
     }
   }
   audit_log.log("Finished parsing header");
@@ -121,7 +128,6 @@ void OPLElection::assign_seats() {
   // determine quota
   int quota = (int)total_ballots / num_seats;
   audit_log.log("The quota for this election is: " + std::to_string(quota));
-
   // assign initial seats to parties
   for(int i = 0; i < parties.size(); i++){
     int seats = (int)parties.at(i).get_tally() / quota;

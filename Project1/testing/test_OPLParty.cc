@@ -84,7 +84,6 @@ TEST_F(fixture_OPLParty, OPLParty_gettop_noties) {
   OPLBallot* ballot6 = new OPLBallot(",,,1");
   candidate4->add_ballot(*ballot5);
   candidate4->add_ballot(*ballot6);
-
   std::vector<std::string> actual = party->get_top_n_candidate_names(4);
   std::vector<std::string> expected = {"Meenie", "Moe", "Eenie", "Miney"};
   ASSERT_EQ(actual, expected);
