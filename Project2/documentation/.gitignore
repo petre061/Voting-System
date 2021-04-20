@@ -1,0 +1,5 @@
+
+# Ignore Doxygen output files
+html
+latex
+Doxyfile
