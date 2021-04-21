@@ -67,16 +67,12 @@ OPLElection::OPLElection(std::string filename) : Election("OPL", filename) {
               parties.back().add_candidate(temp);
               p_idx[party] = p_idx_count++;
           }
-          std::cout << parties.back().get_name() << parties.back().get_candidates().size() << p_idx_count << "\n";
-        //}
+        }
       }
-    }
     } else if (i == 3) {
       num_seats = std::stoi(line);
-      //std::cout << num_seats << "\n";
     } else if (i == 4) {
       total_ballots = std::stoi(line);
-      //std::cout << total_ballots << "\n";
     }
   }
   audit_log.log("Finished parsing header");
@@ -204,12 +200,12 @@ void OPLElection::announce_results() {
 }
 
 int OPLElection::run() {
-  std::cout << "START RUN";
+  std::cout << "START RUN" << std::endl;
   // parse ballots
   parse_ballots();
   // assign seats to parties
   assign_seats();
-  std::cout << "ANNOUNCE RESULT";
+  std::cout << "ANNOUNCE RESULT" << std::endl;
   // display results
   announce_results();
   return 0;
