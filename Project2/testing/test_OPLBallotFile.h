@@ -1,5 +1,5 @@
 /**
- * @file test_IRBallotFile.h
+ * @file test_OPLBallotFile.h
  * @author Alex Bohm (bohm0080@umn.edu)
  * @brief
  * @version 1.0
@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2021
  *
  */
-#ifndef PROJECT2_TESTING_TEST_IRBALLOTFILE_H_
-#define PROJECT2_TESTING_TEST_IRBALLOTFILE_H_
+#ifndef PROJECT2_TESTING_TEST_OPLBALLOTFILE_H_
+#define PROJECT2_TESTING_TEST_OPLBALLOTFILE_H_
 
-#include "IRBallotFile.h"
+#include "OPLBallotFile.h"
 #include "gtest/gtest.h"
 
-class fixture_IRBallotFile : public ::testing::Test {
+class fixture_OPLBallotFile : public ::testing::Test {
  protected:
  public:
   void SetUp() {
@@ -25,4 +25,4 @@ class fixture_IRBallotFile : public ::testing::Test {
     // Clean up any data
   }
 };
-#endif  // PROJECT2_TESTING_TEST_IRBALLOTFILE_H_
+#endif  // PROJECT2_TESTING_TEST_OPLBALLOTFILE_H_

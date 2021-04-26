@@ -22,6 +22,7 @@
 
 #include "Election.h"
 #include "OPLBallot.h"
+#include "OPLBallotFactory.h"
 #include "OPLCandidate.h"
 #include "OPLParty.h"
 #include "TieBreaker.h"
@@ -31,6 +32,7 @@
  */
 class OPLElection : public Election {
  private:
+  OPLBallotFactory ballot_factory;
   /**
    * @brief List that stores all indicies of a max tally, used for tie breaker
    */
@@ -76,12 +78,18 @@ class OPLElection : public Election {
    * @param max The max tally number we are searching for in the list
    */
   void find_max_values(std::vector<int> tallies, int max);
+  std::vector<OPLParty>::iterator get_party_by_name(const std::string& name);
 
  public:
   /**
    * @brief Constructor for an OPL Election object
    */
-  explicit OPLElection(std::string filename);
+  explicit OPLElection(const std::string& filename);
+  /**
+   * @brief Construct a new OPLElection object using multiple files
+   *
+   * @param filenames Files to parse for OPL ballots
+   */
   explicit OPLElection(const std::vector<std::string>& filenames);
   /**
    * @brief Run an OPL Election
