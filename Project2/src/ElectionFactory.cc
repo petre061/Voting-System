@@ -48,15 +48,11 @@ Election* ElectionFactory::create(const std::vector<std::string>& filenames) {
   if (type.find("IR") != std::string::npos) {
     // Return a new Independent Runoff election if the file contains the proper
     // header
-    // TODO(Alex): Update IRElection to take multiple files
-    std::cerr << "WARNING: Using only the first file" << std::endl;
-    return new IRElection(filenames[0]);
+    return new IRElection(filenames);
   } else if (type.find("OPL") != std::string::npos) {
     // Return a new Open Party Listing election if the file contains the proper
     // header
-    // TODO(Alex): Update OPLElection to take multiple files
-    std::cerr << "WARNING: Using only the first file" << std::endl;
-    return new OPLElection(filenames[0]);
+    return new OPLElection(filenames);
   }
 
   // Unknown election type
