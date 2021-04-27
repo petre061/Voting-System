@@ -19,6 +19,7 @@
 
 #include "Election.h"
 #include "IRBallot.h"
+#include "IRBallotFactory.h"
 #include "IRCandidate.h"
 #include "TieBreaker.h"
 
@@ -48,6 +49,9 @@ class IRElection : public Election {
    * @brief The candidates in the election
    */
   std::vector<IRCandidate> candidates;
+
+  IRBallotFactory ballot_factory;
+
   /**
    * @brief Parse the ballots from the file
    *
@@ -90,6 +94,12 @@ class IRElection : public Election {
    * @brief Constructor for IR Election object
    */
   explicit IRElection(const std::string& filename);
+  /**
+   * @brief Construct a new IRElection object
+   *
+   * @param filenames The multiple IR ballot files to count
+   */
+  explicit IRElection(const std::vector<std::string>& filenames);
   /**
    * @brief Run an IR Election
    */

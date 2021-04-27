@@ -36,15 +36,6 @@ class Election : public Loggable {
    * @brief The type of election.
    */
   std::string type = "UNKNOWN ELECTION TYPE";
-
-  /**
-   * @brief The name of the file that holds the ballots.
-   */
-  std::string ballot_filename;
-  /**
-   * @brief The actual file handler for the ballot file.
-   */
-  std::ifstream ballot_file;
   /**
    * @brief The @ref AuditLog instance for an election.
    */
@@ -65,18 +56,13 @@ class Election : public Loggable {
    * This must be called in the initializer list of the inheriting type's
    * constructor.
    */
-  explicit Election(const std::string& election_type,
-                    const std::string& ballots);
+  explicit Election(const std::string& election_type);
   /**
    * @brief Get the type of election
    *
    * @return const std::string& Type of election
    */
   const std::string& get_type() const;
-  /**
-   * @brief Desctructor for Elections
-   */
-  virtual ~Election();
   /**
    * @brief Abstract method to be implemented by child election classes that
    * runs the methods necessary for determining the results of the election
