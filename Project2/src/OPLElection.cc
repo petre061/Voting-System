@@ -1,4 +1,3 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
 /**
  * @file OPLElection.cc
  * @author Nikhil Srikanth (srika018@umn.edu)
@@ -36,7 +35,6 @@ OPLElection::OPLElection(const std::vector<std::string>& filenames)
   audit_log.log("Starting OPL Election");
 
   audit_log.log("Parsing file header");
-
   // Unpack the candidates
   const std::vector<std::pair<std::string, std::string>>& cans =
       ballot_factory.get_candiates();
@@ -210,12 +208,12 @@ void OPLElection::announce_results() {
 }
 
 int OPLElection::run() {
-  std::cout << "START RUN";
+  std::cout << "START RUN" << std::endl;
   // parse ballots
   parse_ballots();
   // assign seats to parties
   assign_seats();
-  std::cout << "ANNOUNCE RESULT";
+  std::cout << "ANNOUNCE RESULT" << std::endl;
   // display results
   announce_results();
   return 0;
