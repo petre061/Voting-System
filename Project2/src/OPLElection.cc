@@ -117,7 +117,7 @@ void OPLElection::assign_seats() {
   int total_seats = num_seats;
 
   // determine quota
-  int quota = (int)total_ballots / num_seats;
+  int quota = (total_ballots + num_seats - 1) / num_seats;
   audit_log.log("The quota for this election is: " + std::to_string(quota));
   // assign initial seats to parties
   for (int i = 0; i < parties.size(); i++) {
@@ -164,8 +164,14 @@ void OPLElection::assign_seats() {
     } else {
       // Tie break
       audit_log.log("Tie for largest remainder");
-      int w_index =
-          max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
+      std::cout << max_indicies.size() << std::endl;
+      int w_index;
+      if(max_indicies.size() == 0){
+        w_index = TieBreaker::resolve_tie(parties.size());
+      } else {
+        w_index =
+            max_indicies.at(TieBreaker::resolve_tie(max_indicies.size()));
+      }
       audit_log.log(parties.at(w_index).get_name() + " won the tie breaker");
       party_seats[parties.at(w_index).get_name()]++;
       total_seats--;
