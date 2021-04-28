@@ -26,6 +26,8 @@ IRElection::IRElection(const std::vector<std::string>& filenames)
     : Election("IR"), ballot_factory(filenames) {
   audit_log.log("Starting Independent Runoff Election");
   audit_log.log("Finished Parsing Election Header");
+  // Log the ballot factory
+  audit_log.log(ballot_factory);
 
   // Initialize IRCandidates based on the candidates we parsed
   for (auto& c : ballot_factory.get_candiates()) {

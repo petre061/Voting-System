@@ -31,11 +31,12 @@ class OPLBallotFactory : public Loggable {
  public:
   explicit OPLBallotFactory(const std::vector<std::string>& filenames);
 
-  uint64_t get_remaining();
+  uint64_t get_remaining() const;
   OPLBallot get_ballot();
 
   uint64_t get_num_seats() const;
-  const std::vector<std::pair<std::string, std::string>>& get_candiates() const;
+  const std::vector<std::pair<std::string, std::string>>& get_candidates()
+      const;
 
   std::string log() const override;
 };

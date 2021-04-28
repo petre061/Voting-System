@@ -17,6 +17,7 @@
 
 #include "IRElection.h"
 #include "OPLElection.h"
+#include "POElection.h"
 
 Election* ElectionFactory::create(const std::vector<std::string>& filenames) {
   std::string type = "";
@@ -53,6 +54,9 @@ Election* ElectionFactory::create(const std::vector<std::string>& filenames) {
     // Return a new Open Party Listing election if the file contains the proper
     // header
     return new OPLElection(filenames);
+  } else if (type.find("PO") != std::string::npos) {
+    std::cerr << "PO does not take a vector of filenames yet" << std::endl;
+    // return new POElection(filenames);
   }
 
   // Unknown election type

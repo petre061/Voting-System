@@ -34,10 +34,13 @@ OPLElection::OPLElection(const std::vector<std::string>& filenames)
     : Election("OPL"), ballot_factory(filenames) {
   audit_log.log("Starting OPL Election");
 
+  // Log the ballot factory
+  audit_log.log(ballot_factory);
+
   audit_log.log("Parsing file header");
   // Unpack the candidates
   const std::vector<std::pair<std::string, std::string>>& cans =
-      ballot_factory.get_candiates();
+      ballot_factory.get_candidates();
   for (auto& pair : cans) {
     OPLCandidate* temp = new OPLCandidate(pair.first);
     // Add the candidate to the candidate list

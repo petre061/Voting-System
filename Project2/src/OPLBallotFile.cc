@@ -137,8 +137,24 @@ std::string OPLBallotFile::getline() {
   return line;
 }
 std::string OPLBallotFile::log() const {
-  // TODO: this
-  return "";
+  std::stringstream output;
+
+  output << "OPLBallotFile:";
+
+  output << " \"" << filename << "\"";
+
+  output << " get_num_seats()=" << std::to_string(get_num_seats());
+
+  output << " get_remaining()=" << std::to_string(get_remaining());
+
+  // Output the candidates
+  output << " candidates=[";
+  for (auto& can : get_candidates()) {
+    output << " " << can.first << " (" << can.second << ")";
+  }
+  output << "]";
+
+  return output.str();
 }
 uint64_t OPLBallotFile::get_num_candidates() const {
   // Return the number of candidates

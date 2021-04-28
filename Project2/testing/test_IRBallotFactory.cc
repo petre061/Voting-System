@@ -11,6 +11,7 @@
 #include "test_IRBallotFactory.h"
 
 #include <string>
+#include <vector>
 
 #include "IRBallotFactory.h"
 
@@ -20,7 +21,7 @@ TEST_F(fixture_IRBallotFactory, IRBallotFactoryConstructor) {
 
   ASSERT_EQ(factory.get_remaining(), 36);
 }
-TEST_F(fixture_IRBallotFactory, IRBallotFactory_get_ballot) {
+TEST_F(fixture_IRBallotFactory, get_ballot) {
   IRBallotFactory factory(
       {"ballot_files/ir_half_first.csv", "ballot_files/ir_half_second.csv"});
 
@@ -49,7 +50,15 @@ TEST_F(fixture_IRBallotFactory, IRBallotFactory_get_ballot) {
   ASSERT_EQ(factory.get_remaining(), 25);
   b = factory.get_ballot();
   ASSERT_EQ(factory.get_remaining(), 24);
+
+  // Make sure this ballot is the one from the second file
   b = factory.get_ballot();
+  ASSERT_EQ(b.get_choice(), 0);
+  b.increment_choice();
+  ASSERT_EQ(b.get_choice(), 2);
+  b.increment_choice();
+  ASSERT_EQ(b.get_choice(), Ballot::NO_CHOICE);
+
   ASSERT_EQ(factory.get_remaining(), 23);
   b = factory.get_ballot();
   ASSERT_EQ(factory.get_remaining(), 22);
@@ -99,7 +108,7 @@ TEST_F(fixture_IRBallotFactory, IRBallotFactory_get_ballot) {
   ASSERT_EQ(factory.get_remaining(), 0);
 }
 
-TEST_F(fixture_IRBallotFactory, IRBallotFactory_get_candidates) {
+TEST_F(fixture_IRBallotFactory, get_candidates) {
   IRBallotFactory factory(
       {"ballot_files/ir_half_first.csv", "ballot_files/ir_half_second.csv"});
 
@@ -119,4 +128,34 @@ TEST_F(fixture_IRBallotFactory, IRBallotFactory_get_candidates) {
 
   ASSERT_EQ(cans[3].first, "Royce");
   ASSERT_EQ(cans[3].second, "L");
+}
+TEST_F(fixture_IRBallotFactory, log) {
+  const std::vector<std::string> filenames = {
+      "ballot_files/ir_half_first.csv", "ballot_files/ir_half_second.csv"};
+
+  IRBallotFactory factory(filenames);
+
+  const std::string log = factory.log();
+
+  // Make sure all the given filenames appear in the log
+  for (auto& filename : filenames) {
+    ASSERT_NE(log.find(filename), std::string::npos)
+        << "Unable to find \"" << filename << "\" in log";
+  }
+
+  // ASSERT_NE(log.find(""), std::string::npos) << "";
+
+  // Make sure the candidates are in the log
+  ASSERT_NE(log.find("Rosen (D)"), std::string::npos)
+      << "Unable to find candidate in log";
+  ASSERT_NE(log.find("Kleinberg (R)"), std::string::npos)
+      << "Unable to find candidate in log";
+  ASSERT_NE(log.find("Chou (I)"), std::string::npos)
+      << "Unable to find candidate in log";
+  ASSERT_NE(log.find("Royce (L)"), std::string::npos)
+      << "Unable to find candidate in log";
+
+  // Make sure number of ballots is in the log
+  ASSERT_NE(log.find("36"), std::string::npos)
+      << "Unable to find number of remaining ballots";
 }

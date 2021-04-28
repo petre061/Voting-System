@@ -70,7 +70,7 @@ OPLBallotFactory::OPLBallotFactory(const std::vector<std::string>& filenames) {
     }
   }
 }
-uint64_t OPLBallotFactory::get_remaining() {
+uint64_t OPLBallotFactory::get_remaining() const {
   // Return the remaining ballots
   return ballots_remaining;
 }
@@ -101,12 +101,23 @@ uint64_t OPLBallotFactory::get_num_seats() const {
   return num_seats;
 }
 const std::vector<std::pair<std::string, std::string>>&
-OPLBallotFactory::get_candiates() const {
+OPLBallotFactory::get_candidates() const {
   // Return the candidates
   return candidates;
 }
 
 std::string OPLBallotFactory::log() const {
-  // TODO(Alex): This
-  return "UNIMPLEMENTED";
+  std::stringstream output;
+
+  output << "IRBallotFactory:";
+
+  output << " get_remaining()=" << std::to_string(get_remaining());
+
+  output << " files=[";
+  for (auto& file : files) {
+    output << file.log() << std::endl;
+  }
+  output << "]";
+
+  return output.str();
 }

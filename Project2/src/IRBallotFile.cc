@@ -11,6 +11,7 @@
 #include "IRBallotFile.h"
 
 #include <iostream>
+#include <sstream>
 
 IRBallotFile::IRBallotFile(const std::string& fname) : BallotFile(fname) {
   // Temporary variable containing the contents of a line
@@ -120,8 +121,23 @@ std::string IRBallotFile::getline() {
   return line;
 }
 std::string IRBallotFile::log() const {
-  // TODO: this
-  return "";
+  std::stringstream output;
+
+  output << "IRBallotFile: \"" << filename << "\"";
+
+  // Log some basic counts of ballots and candidates
+  output << " get_num_candidates()=" << std::to_string(get_num_candidates());
+  output << " get_num_ballots()=" << std::to_string(get_num_ballots());
+
+  // Log the candidates
+  output << " candidates=[";
+  for (auto& can : get_candidates()) {
+    output << " " << can.first << " (" << can.second << ")";
+  }
+  output << "]";
+
+  // Convert the stringstream into a string and return it
+  return output.str();
 }
 uint64_t IRBallotFile::get_num_candidates() const {
   // Return the number of candidates

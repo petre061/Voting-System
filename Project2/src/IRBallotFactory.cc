@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 IRBallotFactory::IRBallotFactory(const std::vector<std::string>& filenames) {
   for (const auto& name : filenames) {
@@ -64,7 +65,7 @@ IRBallotFactory::IRBallotFactory(const std::vector<std::string>& filenames) {
     }
   }
 }
-uint64_t IRBallotFactory::get_remaining() {
+uint64_t IRBallotFactory::get_remaining() const {
   // Return the remaining ballots
   return ballots_remaining;
 }
@@ -96,6 +97,17 @@ IRBallotFactory::get_candiates() const {
 }
 
 std::string IRBallotFactory::log() const {
-  // TODO(Alex): This
-  return "UNIMPLEMENTED";
+  std::stringstream output;
+
+  output << "IRBallotFactory:";
+
+  output << " get_remaining()=" << std::to_string(get_remaining());
+
+  output << " files=[";
+  for (auto& file : files) {
+    output << file.log() << std::endl;
+  }
+  output << "]";
+
+  return output.str();
 }

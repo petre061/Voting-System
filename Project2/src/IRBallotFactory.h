@@ -30,7 +30,7 @@ class IRBallotFactory : public Loggable {
  public:
   explicit IRBallotFactory(const std::vector<std::string>& filenames);
 
-  uint64_t get_remaining();
+  uint64_t get_remaining() const;
   IRBallot get_ballot();
 
   const std::vector<std::pair<std::string, std::string>>& get_candiates() const;
