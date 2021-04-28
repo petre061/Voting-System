@@ -13,21 +13,23 @@
  */
 
 #include "OPLParty.h"
-#include "TieBreaker.h"
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <map>
-#include <algorithm>
-#include <queue>
 
-OPLParty::OPLParty(const std::string& name) {
-  pname = name;
-}
+#include <algorithm>
+#include <iostream>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <string>
+
+#include "TieBreaker.h"
+
+OPLParty::OPLParty(const std::string& name) { pname = name; }
 
 uint64_t OPLParty::get_tally() {
-  uint64_t tally =0;
-  // Iterate through the length of the list of candidates attributed to the OPLParty instance, and add their tally() returns to a total party tally
+  uint64_t tally = 0;
+  // Iterate through the length of the list of candidates attributed to the
+  // OPLParty instance, and add their tally() returns to a total party tally
   for (int i = 0; i < candidates.size(); i++) {
     tally += candidates.at(i)->get_tally();
   }
@@ -43,63 +45,65 @@ void OPLParty::add_candidate(OPLCandidate* new_candidate) {
 std::string OPLParty::log() const {
   std::stringstream output;
   output << "OPL Party " << pname << ": [";
-  for(int i = 0; i < candidates.size(); i++) {
+  for (int i = 0; i < candidates.size(); i++) {
     // For all OPLCandidate objects attributed to specific OPLParty:
     output << candidates.at(i)->log() << ",";
-    // Display the ballot ID and choice for each OPLBallot for each candidate in the party   
+    // Display the ballot ID and choice for each OPLBallot for each candidate in
+    // the party
   }
   output << "]";
   return output.str();
 }
 
-std::string OPLParty::get_name(){
-  return pname;
-}
+std::string OPLParty::get_name() { return pname; }
 
-// Return an ordered list of the highest tally-getting candidates within a given party, the length of the list being equivalent to the number of seats awarded to said party
-std::vector<std::string> OPLParty::get_top_n_candidate_names(int n) {
+bool candidate_sorter(OPLCandidate* a, OPLCandidate* b) {
+  return a->get_tally() < b->get_tally();
+}
+// Return an ordered list of the highest tally-getting candidates within a given
+// party, the length of the list being equivalent to the number of seats awarded
+// to said party
+std::vector<std::string> OPLParty::get_top_n_candidate_names(uint64_t n) const {
   // duplicate the list of OPLCandidates attributed to party
   std::vector<OPLCandidate*> candidate_list = get_candidates();
+  std::map<uint64_t, std::vector<OPLCandidate*>> unique_tallies;
+
   std::vector<std::string> result;
-  int seats = n;
-  if(seats > candidate_list.size()) {
-    throw std::invalid_argument("Request of candidates is larger than number of candidates associated with party");
+
+  // Sort the candidates into a list
+  std::sort(candidate_list.begin(), candidate_list.end(), candidate_sorter);
+
+  // Sort the candidates into partitions of tallies
+  for (auto can : candidate_list) {
+    unique_tallies[can->get_tally()].push_back(can);
   }
-  // As long as there is at least one candidate attributed to the party - will iterate until none are in duplicate list
-  while(candidate_list.size() > 0) {
-    // So long as there are > 0 seats to allocate still:
-    if(seats > 0) {
-      // For each seat left to allocate, find max tally and index of candidate with said tally
-      int tally = 0;
-      int index = 255;
-      for(int i = 0; i < candidate_list.size(); i++) {
-        if(candidate_list.at(i)->get_tally() > tally) {
-          tally = candidate_list.at(i)->get_tally();
-          index = i;
-        }
-        // Tie-break between the two with the same tally
-        if(candidate_list.at(i)->get_tally() == tally) {
-          if(TieBreaker::resolve_tie(2) == 1) {
-            tally = candidate_list.at(i)->get_tally();
-            index = i;
-          }
-        }        
+
+  for (auto& tally : unique_tallies) {
+    if (tally.second.size() < n) {
+      // Add all the candidates in a partition if there are enough seats left
+      for (auto& can : tally.second) {
+        result.push_back(can->get_name());
       }
-      // add next highest candidate to result vector, and erase said candidate from the list being iterated through
-      result.push_back(candidate_list.at(index)->get_name());
-      std::vector<OPLCandidate*>::iterator i = candidate_list.begin() + index;
-      candidate_list.erase(i);
-      seats --;
-    }
-    else {
-      break;
+      n -= tally.second.size();
+    } else {
+      // Allocate the remaining seats to tie winners
+      while (n > 0) {
+        // Determine a winner
+        size_t winner = TieBreaker::resolve_tie(tally.second.size());
+        // Put them into the result
+        result.push_back(tally.second[winner]->get_name());
+        // Remove them from the partition
+        tally.second.erase(tally.second.begin() + winner);
+        // Decrement the number of remaining seats
+        n--;
+      }
     }
   }
 
   return result;
 }
 
-std::vector<OPLCandidate*> OPLParty::get_candidates() {
+const std::vector<OPLCandidate*>& OPLParty::get_candidates() const {
   return candidates;
 }
 // Creating / adding to candidates DS done in OPLElection class?
