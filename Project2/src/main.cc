@@ -16,15 +16,19 @@
 int main(int argc, char const* argv[]) {
   // Check that we have the right amount of arguments
   if (argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " election_file.csv" << std::endl;
+    std::cerr << "Usage: " << argv[0]
+              << " election_file_one.csv [election_file_two.csv]" << std::endl;
     return 1;
   }
 
-  // The election file is always the last one in the list of arguments
-  std::string filename = argv[argc - 1];
+  // Collect the given files into a list
+  std::vector<std::string> filenames;
+  for (int i = 1; i < argc; ++i) {
+    filenames.push_back(argv[i]);
+  }
 
-  // Make an election using the file
-  Election* election = ElectionFactory::create(filename);
+  // Make an election using the list of files
+  Election* election = ElectionFactory::create(filenames);
 
   // Exit on factory failure. Factory will print error message
   if (election == nullptr) {

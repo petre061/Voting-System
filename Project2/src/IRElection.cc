@@ -20,37 +20,21 @@
 #include <string>
 
 #include "Ballot.h"
-
-IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
+IRElection::IRElection(const std::string& filename)
+    : IRElection(std::vector<std::string>(1, filename)) {}
+IRElection::IRElection(const std::vector<std::string>& filenames)
+    : Election("IR"), ballot_factory(filenames) {
   audit_log.log("Starting Independent Runoff Election");
-
-  // Log the file we are reading ballots from
-  audit_log.log("Reading election information from: \'" + ballot_filename +
-                "\'");
-
-  audit_log.log("Parsing File Header");
-  std::string line, name;
-  for (int i = 0; i < 4; i++) {
-    getline(ballot_file, line);
-    if (i < 2) {
-      continue;
-    } else if (i == 2) {
-      // parse candidates
-      line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
-      line.erase(std::remove(line.begin(), line.end(), '('), line.end());
-      line.erase(std::remove(line.begin(), line.end(), ')'), line.end());
-      std::istringstream ss(line);
-      while (getline(ss, name, ',')) {
-        // TODO(future): switch this to allow more than 1 character for the
-        // party
-        candidates.push_back(IRCandidate(name.substr(0, name.length() - 1),
-                                         name.substr(name.length() - 1)));
-      }
-    } else if (i == 3) {
-      total_ballots = std::stoull(line);
-    }
-  }
   audit_log.log("Finished Parsing Election Header");
+  // Log the ballot factory
+  audit_log.log(ballot_factory);
+
+  // Initialize IRCandidates based on the candidates we parsed
+  for (auto& c : ballot_factory.get_candiates()) {
+    candidates.emplace_back(c.first, c.second);
+  }
+  // Set the total number of ballots
+  total_ballots = ballot_factory.get_remaining();
 
   // Log parsed header data
   audit_log.log("Election Type: " + type);
@@ -67,6 +51,7 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
 void IRElection::parse_ballots() {
   audit_log.log("Parsing Ballots");
 
+<<<<<<< HEAD
   // File is already open from Election constructor
   std::string line;
   while (getline(ballot_file, line)) {
@@ -74,8 +59,6 @@ void IRElection::parse_ballots() {
     IRBallot temp(line);
     int c_idx = temp.get_choice();
     if (c_idx != Ballot::NO_CHOICE) {
-      // Put ballot into candidate, check to see if valid
-      if(Validator::validate(temp.get_choices().size(),candidates.size())) {
         audit_log.log(temp);
         candidates.at(c_idx).add_ballot(temp);
       }
@@ -83,10 +66,20 @@ void IRElection::parse_ballots() {
       // Discard ballot without choice
       audit_log.log("Ballot with no choice discarded:");
       audit_log.log(temp);
+=======
+  while (ballot_factory.get_remaining() > 0) {
+    IRBallot b = ballot_factory.get_ballot();
+
+    // TODO: Verify Ballot
+
+    if (b.get_choice() == Ballot::NO_CHOICE) {
+      // Discard ballot
+      continue;
+>>>>>>> c603cfa22ac39fa1415d0d71e50bff6b43a93f89
     }
+    // Add the ballot to the candidate
+    candidates[b.get_choice()].add_ballot(b);
   }
-  // Can close here otherwise it will also be called in destructor
-  ballot_file.close();
 
   audit_log.log("Done Parsing Ballots");
 }

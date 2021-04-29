@@ -2,6 +2,9 @@
 
 #include "test_IRElection.h"
 
+#include <string>
+#include <vector>
+
 TEST_F(fixture_IRElection, IRElectionSRSExample) {
   // Test using the example file from the SRS document
   IRElection election("ballot_files/ir_example.csv");
@@ -65,4 +68,10 @@ TEST_F(fixture_IRElection, IRElectionTWT) {
   ASSERT_EQ(election.run(), 0);
 
   // TODO(someone): more testing here
+}
+
+TEST_F(fixture_IRElection, multiple_files) {
+  IRElection election(std::vector<std::string>{
+      "ballot_files/ir_half_first.csv", "ballot_files/ir_half_second.csv"});
+  ASSERT_EQ(election.run(), 0);
 }

@@ -27,25 +27,13 @@ std::string Election::make_file_date() {
   return std::string(time_buffer);
 }
 
-Election::Election(const std::string& election_type, const std::string& ballots)
+Election::Election(const std::string& election_type)
     : type(election_type),
-      ballot_filename(ballots),
-      ballot_file(ballot_filename),
       audit_log("audit_log_" + type + "_" + make_file_date() + ".txt"),
       media_report("media_report_" + type + "_" + make_file_date() + ".txt") {
-  // Unable to open file specified, throw exception
-  if (!ballot_file.is_open()) {
-    throw std::invalid_argument("Unable to open ballot file \'" +
-                                ballot_filename + "\'");
-  }
+  // Nothing to do
 }
 const std::string& Election::get_type() const {
   // Return the election type
   return type;
-}
-Election::~Election() {
-  // Force closure of ballot_file on destruction
-  if (ballot_file.is_open()) {
-    ballot_file.close();
-  }
 }
