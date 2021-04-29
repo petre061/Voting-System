@@ -22,7 +22,7 @@
 #include "IRBallotFactory.h"
 #include "IRCandidate.h"
 #include "TieBreaker.h"
-
+#include "Validator.h"
 /**
  * @brief Implements the core logic of an Independent Runoff election
  *

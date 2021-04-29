@@ -21,6 +21,7 @@
  * @return true if the the number of choices on a ballot is greater than half of the total number of candidates possible, meaning that the ballot is valid
  * @return false if the ballot is invalid 
  */
+ Validator Validator::instance;
  bool Validator::validate(uint8_t num_choices,uint8_t total_candidates) {
     uint8_t more_than_half = round(total_candidates/2);
     return(num_choices >= more_than_half);

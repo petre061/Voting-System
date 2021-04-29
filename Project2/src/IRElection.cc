@@ -51,31 +51,16 @@ IRElection::IRElection(const std::vector<std::string>& filenames)
 void IRElection::parse_ballots() {
   audit_log.log("Parsing Ballots");
 
-<<<<<<< HEAD
-  // File is already open from Election constructor
-  std::string line;
-  while (getline(ballot_file, line)) {
-    // store ballots in candidates
-    IRBallot temp(line);
-    int c_idx = temp.get_choice();
-    if (c_idx != Ballot::NO_CHOICE) {
-        audit_log.log(temp);
-        candidates.at(c_idx).add_ballot(temp);
-      }
-    } else {
-      // Discard ballot without choice
-      audit_log.log("Ballot with no choice discarded:");
-      audit_log.log(temp);
-=======
   while (ballot_factory.get_remaining() > 0) {
     IRBallot b = ballot_factory.get_ballot();
 
-    // TODO: Verify Ballot
+    if(!Validator::validate(b.get_choices().size(),candidates.size())) {
+      continue;
+    }
 
     if (b.get_choice() == Ballot::NO_CHOICE) {
       // Discard ballot
       continue;
->>>>>>> c603cfa22ac39fa1415d0d71e50bff6b43a93f89
     }
     // Add the ballot to the candidate
     candidates[b.get_choice()].add_ballot(b);

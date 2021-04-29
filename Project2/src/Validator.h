@@ -8,14 +8,15 @@
  * @copyright Copyright (c) 2021
  * 
  */
- 
+#include <stdint.h>
 #ifndef PROJECT1_SRC_VALIDATOR_H_
 #define PROJECT1_SRC_VALIDATOR_H_
 
 class Validator {
+    private:
+        static Validator instance;
     public:
-    static bool validate(uint8_t num_choices, uint8_t total_candidates);
-
+        static bool validate(uint8_t num_choices, uint8_t total_candidates);
 };
 
 #endif
