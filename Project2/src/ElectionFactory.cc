@@ -17,7 +17,7 @@
 
 #include "IRElection.h"
 #include "OPLElection.h"
-#include "POElection.h"
+// #include "POElection.h"
 
 Election* ElectionFactory::create(const std::vector<std::string>& filenames) {
   std::string type = "";
