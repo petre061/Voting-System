@@ -7,3 +7,15 @@ TEST_F(fixture_VALIDATOR, validballot) {
     valid = Validator::validate(ballot->get_choices.size(),4);
     ASSERT_LT(valid, 1);
 }
+
+TEST_F(fixture_VALIDATOR, validballot_morethanhalf) {
+    ballot = IRBallot(1,2,3,,);
+    valid = Validator::validate(ballot->get_choices.size(),4);
+    ASSERT_LT(valid, 1);
+}
+
+TEST_F(fixture_VALIDATOR, invalidballot) {
+    ballot = IRBallot(,,,,);
+    valid = Validator::validate(ballot->get_choices.size(),4);
+    ASSERT_LT(valid, 0);
+}
