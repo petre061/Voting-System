@@ -55,7 +55,7 @@ IRElection::IRElection(const std::string& filename) : Election("IR", filename) {
   // Log parsed header data
   audit_log.log("Election Type: " + type);
   audit_log.log("Total Ballots: " + std::to_string(total_ballots));
-
+  //
   // Log parsed candidates
   audit_log.log("Parsed " + std::to_string(candidates.size()) +
                 " Candididates:");
@@ -74,9 +74,11 @@ void IRElection::parse_ballots() {
     IRBallot temp(line);
     int c_idx = temp.get_choice();
     if (c_idx != Ballot::NO_CHOICE) {
-      // Put ballot into candidate
-      audit_log.log(temp);
-      candidates.at(c_idx).add_ballot(temp);
+      // Put ballot into candidate, check to see if valid
+      if(Validator::validate(temp.get_choices().size(),candidates.size())) {
+        audit_log.log(temp);
+        candidates.at(c_idx).add_ballot(temp);
+      }
     } else {
       // Discard ballot without choice
       audit_log.log("Ballot with no choice discarded:");
