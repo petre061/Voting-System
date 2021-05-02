@@ -1,4 +1,3 @@
-// Copyright CSCI 5801 Spring 2021 Team 20
 /**
  * @file OPLElection.cc
  * @author Nikhil Srikanth (srika018@umn.edu)
@@ -9,12 +8,12 @@
  * @version 1.0
  * @date 2021-03-14
  *
- * @copyright Copyright (c) 2021
+ * @copyright Copyright (c) 2021 CSCI 5801 Spring 2021 Team 20
  *
  */
 
-#ifndef OPLELECTION_H_
-#define OPLELECTION_H_
+#ifndef PROJECT2_SRC_OPLELECTION_H_
+#define PROJECT2_SRC_OPLELECTION_H_
 
 #include <map>
 #include <string>
@@ -28,10 +27,14 @@
 #include "TieBreaker.h"
 
 /**
- * @brief
+ * @brief A class used to run an Open Party Listing election
  */
 class OPLElection : public Election {
  private:
+  /**
+   * @brief The ballot factory used to produce ballots from the files specified
+   * in the constructor
+   */
   OPLBallotFactory ballot_factory;
   /**
    * @brief List that stores all indicies of a max tally, used for tie breaker
@@ -102,4 +105,4 @@ class OPLElection : public Election {
   std::string log() const override;
 };
 
-#endif
+#endif  // PROJECT2_SRC_OPLELECTION_H_

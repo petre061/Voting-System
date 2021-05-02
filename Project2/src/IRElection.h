@@ -49,9 +49,10 @@ class IRElection : public Election {
    * @brief The candidates in the election
    */
   std::vector<IRCandidate> candidates;
-
+  /**
+   * @brief The ballot factory used to read in ballots
+   */
   IRBallotFactory ballot_factory;
-
   /**
    * @brief Parse the ballots from the file
    *

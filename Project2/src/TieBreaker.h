@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef PROJECT1_SRC_TIEBREAKER_H_
-#define PROJECT1_SRC_TIEBREAKER_H_
+#ifndef PROJECT2_SRC_TIEBREAKER_H_
+#define PROJECT2_SRC_TIEBREAKER_H_
 
 #include <random>
 /**
@@ -33,7 +33,7 @@ class TieBreaker {
   /**
    * @brief      Constructs a new private instance
    *
-   * Note: This is purposly private in order to follow the singleton design
+   * Note: This is purposely private in order to follow the singleton design
    * pattern
    */
   TieBreaker() : twister(device()), distribution(0, 1) {}
@@ -57,4 +57,4 @@ class TieBreaker {
   static uint8_t resolve_tie(uint8_t num);
 };
 
-#endif  // PROJECT1_SRC_TIEBREAKER_H_
+#endif  // PROJECT2_SRC_TIEBREAKER_H_
